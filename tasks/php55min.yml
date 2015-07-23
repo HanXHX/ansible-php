@@ -4,7 +4,7 @@
   apt: pkg=php5-apcu state=latest
 
 - name: TEMPLATE | Configure Opcache / APCu
-  template: src=etc/php5/mods-available/{{ item }}.j2 dest=/etc/php5/mods-available/{{ item }}
+  template: src=etc/php5/mods-available/{{ item }}.ini.j2 dest=/etc/php5/mods-available/{{ item }}.ini
   with_items:
     - apcu
     - opcache

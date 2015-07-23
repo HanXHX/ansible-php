@@ -1,0 +1,25 @@
+;
+; {{ ansible_managed }}
+;
+
+extension=apc.so
+
+; apc.enabled can be set to 0 to disable APC
+apc.enable={{ php_apc_enable }}
+; Mostly for testing and debugging.
+apc.enable_cli={{ php_apc_enable_cli }}
+; The size of each shared memory segment in MB
+apc.shm_size={{ php_apc_shm_size }}
+; A "hint" about the number of distinct source files that will be included or requested on your web server. Set to zero or omit if unsure; this setting is mainly useful for sites that have many thousands of source files.
+apc.num_files_hint={{ php_apc_num_files_hint }}
+; Just like apc.num_files_hint, a "hint" about the number of distinct user cache variables to store. Set to zero or omit if not sure. 
+apc.user_entries_hint={{ php_apc_user_entries_hint }}
+; The number of seconds a cache entry is allowed to idle in a slot in case this cache entry slot is needed by another entry
+apc.user_ttl={{ php_apc_user_ttl }}
+apc.ttl={{ php_apc_ttl }}
+; rsync = 0 | tar/cp = 2
+apc.file_update_protection={{ php_apc_file_update_protection }}
+; This option sets the percentage of processes that will skip trying to cache an uncached file
+apc.slam_defense={{ php_apc_slam_defense }}
+; Verification with ctime will avoid problems caused by programs such as svn or rsync by making sure inodes haven't changed since the last stat
+apc.stat_ctime={{ php_apc_stat_ctime }}

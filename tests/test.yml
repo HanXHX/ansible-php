@@ -23,7 +23,7 @@
       command: php -i
       changed_when: false
     - name: FILE | Create /var/www
-      file: dest=/var/www state=directory 
+      file: dest=/var/www state=directory
     - name: COPY | Add phpinfo
       copy: dest=/var/www/phpinfo.php content='<?php phpinfo();'
     - name: COMMAND | Check vhost

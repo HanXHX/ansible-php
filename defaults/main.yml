@@ -12,7 +12,7 @@ php_ini:
   - key: 'memory_limit'
     value: '256M'
 
-# OpCache settings (useful for PHP >=5.5).
+# OpCache settings (PHP >= 5.5)
 php_opcache_enable: "1"
 php_opcache_enable_cli: "0"
 php_opcache_memory_consumption: "96"
@@ -23,7 +23,7 @@ php_opcache_validate_timestamps: "1"
 php_opcache_revalidate_freq: "2"
 php_opcache_max_file_size: "0"
 
-# APC settings (useful for PHP <5.5).
+# APC/APCu settings
 php_apc_enable: "1"
 php_apc_enable_cli: "0"
 php_apc_shm_size: "32M"
@@ -36,14 +36,13 @@ php_apc_slam_defense: "0"
 php_apc_stat_ctime: "1"
 
 
-
 # PHP-FPM
 php_fpm_poold:
   - pool_name: 'www'
     listen: '/var/run/php5-fpm.sock'
     pm: 'dynamic'
-    pm_max_children: 250 
+    pm_max_children: 250
     pm_start_servers: 10
     pm_min_spare_servers: 10
     pm_max_spare_servers: 20
- 
+
