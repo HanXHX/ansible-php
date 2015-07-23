@@ -24,10 +24,18 @@ php_opcache_revalidate_freq: "2"
 php_opcache_max_file_size: "0"
 
 # APC settings (useful for PHP <5.5).
-php_apc_cache_by_default: "1"
-php_apc_shm_size: "96M"
-php_apc_stat: "1"
+php_apc_enable: "1"
 php_apc_enable_cli: "0"
+php_apc_shm_size: "32M"
+php_apc_num_files_hint: "0"
+php_apc_user_entries_hint: "0"
+php_apc_user_ttl: "360"
+php_apc_ttl: "60"
+php_apc_file_update_protection: "0"
+php_apc_slam_defense: "0"
+php_apc_stat_ctime: "1"
+
+
 
 # PHP-FPM
 php_fpm_poold:

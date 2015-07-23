@@ -1,0 +1,8 @@
+---
+
+- name: APT | Install php-apcu
+  apt: pkg=php-apc state=latest
+
+- name: TEMPLATE | Configure APC
+  template: src=etc/php5/mods-available/apc.j2 dest=/etc/php5/mods-available/apc.ini
+  notify: restart php-fpm

@@ -1,0 +1,16 @@
+;
+; {{ ansible_managed }}
+;
+
+extension=apc.so
+
+apc.enable_cli={{ php_apc_enable_cli }}
+apc.shm_size={{ php_apc_shm_size }}
+apc.enable={{ php_apc_enable }}
+apc.num_files_hint={{ php_apc_num_files_hint }}
+apc.user_entries_hint={{ php_apc_user_entries_hint }}
+apc.user_ttl={{ php_apc_user_ttl }}
+apc.ttl={{ php_apc_ttl }}
+apc.file_update_protection={{ php_apc_file_update_protection }}
+apc.slam_defense={{ php_apc_slam_defense }}
+apc.stat_ctime={{ php_apc_stat_ctime }}
