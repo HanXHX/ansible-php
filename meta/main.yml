@@ -5,6 +5,7 @@ galaxy_info:
   company:
   license: GPLv2
   min_ansible_version: 1.8
+  platforms:  
   - name: Debian
     versions:
     - wheezy

@@ -30,3 +30,12 @@ php_apc_stat: "1"
 php_apc_enable_cli: "0"
 
 # PHP-FPM
+php_fpm_poold:
+  - pool_name: 'www'
+    listen: '/var/run/php5-fpm.sock'
+    pm: 'dynamic'
+    pm_max_children: 250 
+    pm_start_servers: 10
+    pm_min_spare_servers: 10
+    pm_max_spare_servers: 20
+ 

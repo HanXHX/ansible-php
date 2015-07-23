@@ -2,12 +2,12 @@
 
 - name: APT | Install PHP packages
   apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
-  with_items: 
+  with_flattened: 
     - php_packages
     - php_extra_packages
 
 - name: INCLUDE | PHP-FPM
-  include: php-fpm.yml
+  include: fpm.yml
   when: php_install_fpm
 
 - name: SHELL | Get PHP version on apt 
