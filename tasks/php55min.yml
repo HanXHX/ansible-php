@@ -1,0 +1,11 @@
+---
+
+- name: APT | Install php-apcu
+  apt: pkg=php5-apcu state=latest
+
+- name: TEMPLATE | Configure Opcache / APCu
+  template: src=etc/php5/mods-available/{{ item }}.j2 dest=/etc/php5/mods-available/{{ item }}
+  with_items:
+    - apcu
+    - opcache
+  notify: restart php-fpm

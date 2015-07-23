@@ -1,2 +1,25 @@
 ---
-# tasks file for .
+
+- name: APT | Install PHP packages
+  apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
+  with_items: 
+    - php_packages
+    - php_extra_packages
+
+- name: INCLUDE | PHP-FPM
+  include: php-fpm.yml
+  when: php_install_fpm
+
+- name: SHELL | Get PHP version on apt 
+  shell: LANG=C apt-cache policy php5 2>&1 | awk '/Candidate:/ { print $2 }'
+  register: php_apt_version
+  changed_when: false
+
+- name: APT | Install and configure php-apcu / opcache (PHP 5.5+ only)
+  include: php55min.yml
+  when: php_apt_version.stdout|version_compare('5.5', 'ge', False)
+
+- name: APT | Install and configure php-apc (PHP 5.4 max only)
+  include: php54max.yml
+  when: php_apt_version.stdout|version_compare('5.5', 'lt', False)
+
