@@ -2,7 +2,7 @@
 ; {{ ansible_managed }}
 ;
 
-extension=apc.so
+extension={{ php_apc_package }}.so
 
 ; apc.enabled can be set to 0 to disable APC
 apc.enable={{ php_apc_enable }}

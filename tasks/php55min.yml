@@ -3,6 +3,9 @@
 - name: APT | Install php-apcu
   apt: pkg=php5-apcu state=latest
 
+- name: SET_FACT | Set APCu
+  set_fact: php_apc_package="apcu"
+
 - name: TEMPLATE | Configure Opcache / APCu
   template: src=etc/php5/mods-available/{{ item }}.ini.j2 dest=/etc/php5/mods-available/{{ item }}.ini
   with_items:
