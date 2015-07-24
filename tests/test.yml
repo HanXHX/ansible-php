@@ -3,6 +3,8 @@
 - hosts: all
   vars:
     vhost: 'test.local'
+    php_extra_packages:
+      - 'php5-memcached'
   pre_tasks:
     - name: APT | Install nginx
       apt: pkg=nginx state=present update_cache=yes cache_valid_time=3600
