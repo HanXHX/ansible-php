@@ -8,10 +8,18 @@
       apt: pkg=nginx state=present update_cache=yes cache_valid_time=3600
     - name: LINEINFILE | Force vhost in /etc/hosts
       lineinfile: dest=/etc/hosts line='127.0.0.1 {{ vhost }}'
+    - name: SHELL | Get nginx version
+      shell: nginx -V 2>&1 | awk -F '/' '/nginx version/ { print $2 }'
+      register: nginx_version
+      changed_when: false
+    - set_fact: nginx_include="fastcgi_params"
+      when: "{{ nginx_version.stdout | version_compare('1.6', '<', true) }}"
+    - set_fact: nginx_include="fastcgi.conf"
+      when: "{{ nginx_version.stdout | version_compare('1.6', '>=', true) }}"
     - name: COPY | Vhost
       copy: >
         dest=/etc/nginx/sites-enabled/{{ vhost }}
-        content='server { server_name {{ vhost }}; root /var/www; location ~ \.php$ { include fastcgi_params; fastcgi_pass unix:/var/run/php5-fpm.sock;  } }'
+        content='server { server_name {{ vhost }}; root /var/www; location ~ \.php$ { include {{ nginx_include }}; fastcgi_pass unix:/var/run/php5-fpm.sock;  } }'
       notify: reload nginx
   handlers:
     - name: reload nginx
@@ -19,13 +27,13 @@
   roles:
     - ../../
   post_tasks:
-    - name: COMMAND | Test php-cli
-      command: php -i
+    - name: SHELL | Test php-cli
+      shell: php -i | grep '^PHP Version' | head -n 1
       changed_when: false
     - name: FILE | Create /var/www
       file: dest=/var/www state=directory
     - name: COPY | Add phpinfo
       copy: dest=/var/www/phpinfo.php content='<?php phpinfo();'
-    - name: COMMAND | Check vhost
-      command: curl -v http://{{ vhost }}/phpinfo.php
+    - name: SHELL | Check vhost
+      shell: curl -v http://{{ vhost }}/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version 5.*<' | sed -r 's/<//g'
       changed_when: false
