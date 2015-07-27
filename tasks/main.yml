@@ -20,7 +20,7 @@
   when: php_install_xdebug
 
 - name: SHELL | Get PHP version on apt
-  shell: LANG=C apt-cache policy php5 2>&1 | awk '/Candidate:/ { print $2 }'
+  shell: php -v | head -n 1 | awk '{ print $2 }'
   register: php_apt_version
   changed_when: false
 
