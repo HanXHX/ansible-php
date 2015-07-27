@@ -19,12 +19,9 @@ You should look at [default vars](defaults/main.yml).
 ### Writable vars
 
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
+- `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
 - `php_ini`: manage php.ini (php-fpm), as key/value.
-
-#### Xdebug
-
-- `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 
 #### OpCache settings (PHP >= 5.5)
 
@@ -114,6 +111,8 @@ See [Xdebug doc](http://xdebug.org/docs/all_settings)
 ### Read only vars
 
 - `php_packages`: minimal package list to install
+- `php_extension_dir.stdout`: get php extension dir (from task)
+- `php_version.stdout`: get php version (from task)
 
 Dependencies
 ------------
@@ -129,12 +128,12 @@ Example Playbook
       roles:
          - { role: HanXHX.php }
 
-### Debian Wheezy with PHP 5.5
+### Debian Wheezy with PHP 5.5 CLI (no FPM)
 
     - hosts: wheezy-servers
       roles:
          - { role: HanXHX.dotdeb, dotdeb_php_version: "5.5" }
-         - { role: HanXHX.php }
+         - { role: HanXHX.php, php_install_fpm: false }
 
 License
 -------
