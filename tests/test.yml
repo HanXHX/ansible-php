@@ -5,6 +5,7 @@
     vhost: 'test.local'
     php_extra_packages:
       - 'php5-memcached'
+    php_install_xdebug: true
   pre_tasks:
     - name: APT | Install nginx
       apt: pkg=nginx state=present update_cache=yes cache_valid_time=3600
@@ -15,9 +16,9 @@
       register: nginx_version
       changed_when: false
     - set_fact: nginx_include="fastcgi_params"
-      when: "{{ nginx_version.stdout | version_compare('1.6', '<', true) }}"
+      when: nginx_version.stdout | version_compare('1.6', '<', true)
     - set_fact: nginx_include="fastcgi.conf"
-      when: "{{ nginx_version.stdout | version_compare('1.6', '>=', true) }}"
+      when: nginx_version.stdout | version_compare('1.6', '>=', true)
     - name: COPY | Vhost
       copy: >
         dest=/etc/nginx/sites-enabled/{{ vhost }}

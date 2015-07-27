@@ -6,9 +6,18 @@
     - php_packages
     - php_extra_packages
 
+- name: COMMAND | Get PHP extension dir
+  command: php-config --extension-dir
+  changed_when: false
+  register: php_extension_dir
+
 - name: INCLUDE | PHP-FPM
   include: fpm.yml
   when: php_install_fpm
+
+- name: INCLUDE | Xdebug
+  include: xdebug.yml
+  when: php_install_xdebug
 
 - name: SHELL | Get PHP version on apt
   shell: LANG=C apt-cache policy php5 2>&1 | awk '/Candidate:/ { print $2 }'

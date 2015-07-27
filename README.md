@@ -22,6 +22,9 @@ You should look at [default vars](defaults/main.yml).
 - `php_extra_packages`: additional php packages to install (default is an empty list).
 - `php_ini`: manage php.ini (php-fpm), as key/value.
 
+#### Xdebug
+
+- `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 
 #### OpCache settings (PHP >= 5.5)
 
@@ -52,6 +55,60 @@ See [apc doc](https://secure.php.net/manual/en/apc.configuration.php)
 - `php_apc_file_update_protection`
 - `php_apc_slam_defense`
 - `php_apc_stat_ctime`
+
+# Xdebug settings
+
+See [Xdebug doc](http://xdebug.org/docs/all_settings)
+
+- `php_xdebug_auto_trace`
+- `php_xdebug_cli_color`
+- `php_xdebug_collect_assignments`
+- `php_xdebug_collect_includes`
+- `php_xdebug_collect_params`
+- `php_xdebug_collect_return`
+- `php_xdebug_collect_vars`
+- `php_xdebug_coverage_enable`
+- `php_xdebug_default_enable`
+- `php_xdebug_dump_globals`
+- `php_xdebug_dump_once`
+- `php_xdebug_dump_undefined`
+- `php_xdebug_extended_info`
+- `php_xdebug_file_link_format`
+- `php_xdebug_force_display_errors`
+- `php_xdebug_force_error_reporting`
+- `php_xdebug_halt_level`
+- `php_xdebug_idekey`
+- `php_xdebug_manual_url`
+- `php_xdebug_max_nesting_level`
+- `php_xdebug_overload_var_dump`
+- `php_xdebug_profiler_append`
+- `php_xdebug_profiler_enable`
+- `php_xdebug_profiler_enable_trigger`
+- `php_xdebug_profiler_enable_trigger_value`
+- `php_xdebug_profiler_output_dir`
+- `php_xdebug_profiler_output_name`
+- `php_xdebug_remote_autostart`
+- `php_xdebug_remote_connect_back`
+- `php_xdebug_remote_cookie_expire_time`
+- `php_xdebug_remote_enable`
+- `php_xdebug_remote_handler`
+- `php_xdebug_remote_host`
+- `php_xdebug_remote_log`
+- `php_xdebug_remote_mode`
+- `php_xdebug_remote_port`
+- `php_xdebug_scream`
+- `php_xdebug_show_exception_trace`
+- `php_xdebug_show_local_vars`
+- `php_xdebug_show_mem_delta`
+- `php_xdebug_trace_enable_trigger`
+- `php_xdebug_trace_enable_trigger_value`
+- `php_xdebug_trace_format`
+- `php_xdebug_trace_options`
+- `php_xdebug_trace_output_dir`
+- `php_xdebug_trace_output_name`
+- `php_xdebug_var_display_max_children`
+- `php_xdebug_var_display_max_data`
+- `php_xdebug_var_display_max_depth`
 
 
 ### Read only vars
