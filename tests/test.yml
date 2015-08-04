@@ -36,5 +36,5 @@
     - name: COPY | Add phpinfo
       copy: dest=/var/www/phpinfo.php content='<?php phpinfo();'
     - name: SHELL | Check vhost
-      shell: curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version 5.*<' | sed -r 's/<//g'
+      shell: "curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version 5.*<' | sed -r 's/<//g'"
       changed_when: false
