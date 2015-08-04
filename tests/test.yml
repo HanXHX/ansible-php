@@ -9,8 +9,6 @@
   pre_tasks:
     - name: APT | Install nginx
       apt: pkg=nginx state=present update_cache=yes cache_valid_time=3600
-    - name: LINEINFILE | Force vhost in /etc/hosts
-      lineinfile: dest=/etc/hosts line='127.0.0.1 {{ vhost }}'
     - name: SHELL | Get nginx version
       shell: nginx -V 2>&1 | awk -F '/' '/nginx version/ { print $2 }'
       register: nginx_version
@@ -38,5 +36,5 @@
     - name: COPY | Add phpinfo
       copy: dest=/var/www/phpinfo.php content='<?php phpinfo();'
     - name: SHELL | Check vhost
-      shell: curl -v http://{{ vhost }}/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version 5.*<' | sed -r 's/<//g'
+      shell: curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version 5.*<' | sed -r 's/<//g'
       changed_when: false
