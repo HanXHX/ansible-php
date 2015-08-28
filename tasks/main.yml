@@ -15,6 +15,12 @@
   include: fpm.yml
   when: php_install_fpm
 
+- name: LINEINFILE | PHP configuration
+  lineinfile: dest=/etc/php5/cli/php.ini regexp='^;?{{ item.key }}' line='{{ item.key }} = {{ item.value }}'
+  with_flattened:
+    - php_ini
+    - php_ini_cli
+
 - name: INCLUDE | Xdebug
   include: xdebug.yml
   when: php_install_xdebug

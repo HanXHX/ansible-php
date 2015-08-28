@@ -12,6 +12,8 @@ php_ini:
     value: 'Off'
   - key: 'memory_limit'
     value: '256M'
+php_ini_fpm: []
+php_ini_cli: []
 
 # OpCache settings (PHP >= 5.5)
 php_opcache_enable: "1"

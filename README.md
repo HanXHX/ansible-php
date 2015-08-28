@@ -21,7 +21,19 @@ You should look at [default vars](defaults/main.yml).
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
 - `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
-- `php_ini`: manage php.ini (php-fpm), as key/value.
+
+#### php.ini
+
+- `php_ini`: global configuration shared beween FPM/CLI
+- `php_ini_fpm`: manage FPM php.ini (php-fpm)
+- `php_ini_cli`: manage CLI php.ini (php-fpm)
+
+Note:
+
+- If you want exactly same configuration for CLI/FPM. You can put all your data in `php_ini`.
+- Put specific configuration in `php_ini_fpm`/`php_ini_cli`.
+- You can override with `php_ini_fpm`/`php_ini_cli`, but it breaks idempotence.
+
 
 #### OpCache settings (PHP >= 5.5)
 
