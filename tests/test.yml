@@ -1,10 +1,13 @@
 ---
 
 # On Debian Jessie, we need Dotdeb for PHP 7.0
-- hosts: php-7.0 
+- hosts: all
   roles:
     - role: HanXHX.dotdeb
-      when: ansible_distribution_major_version | version_compare(8, 'eq')
+      when: >
+        ansible_distribution_major_version | version_compare(8, 'eq') and
+        php_version is defined and
+        php_version | version_compare('7.0', 'ge')
 
 - hosts: all
   vars:

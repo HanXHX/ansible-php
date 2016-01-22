@@ -19,7 +19,7 @@ fi
 ansible --version
 
 # Check syntax
-ansible-playbook -i $INVENTORY_FILE -c local --syntax-check -vv $PLAYBOOK
+ansible-playbook -i $INVENTORY_FILE -c local $ANSIBLE_ARG --syntax-check -vv $PLAYBOOK
 
 # Check role
 ansible-playbook -i $INVENTORY_FILE -c local $ANSIBLE_ARG --become -vv $PLAYBOOK
