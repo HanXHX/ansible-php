@@ -1,10 +1,10 @@
 ---
 galaxy_info:
   author: Emilien Mantel
-  description: Install and configure PHP (+ FPM is wanted)
+  description: Install and configure PHP 5.6/7.0 (+ FPM is wanted)
   company:
   license: GPLv2
-  min_ansible_version: 1.8
+  min_ansible_version: 2.0
   platforms:
   - name: Debian
     versions:

@@ -1,16 +1,21 @@
 ---
 
 - name: APT | Install PHP-FPM
-  apt: pkg=php5-fpm state=latest
+  apt: pkg={{ php_fpm_service }} state=latest
 
 - name: LINEINFILE | PHP configuration
-  lineinfile: dest=/etc/php5/fpm/php.ini regexp='^;?{{ item.key }}' line='{{ item.key }} = {{ item.value }}'
+  lineinfile: >
+    dest='{{ php_etc_dir }}/fpm/php.ini'
+    regexp='^;?{{ item.key }}'
+    line='{{ item.key }} = {{ item.value }}'
   with_flattened:
     - php_ini
     - php_ini_fpm
   notify: restart php-fpm
 
 - name: TEMPLATE | Deploy pool configuration
-  template: src=etc/php5/fpm/pool.d/pool.conf.j2 dest=/etc/php5/fpm/pool.d/{{ item.pool_name }}.conf
+  template: >
+    src=etc/__php__/fpm/pool.d/pool.conf.j2
+    dest='{{ php_etc_dir }}/fpm/pool.d/{{ item.pool_name }}.conf'
   with_items: php_fpm_poold
   notify: restart php-fpm

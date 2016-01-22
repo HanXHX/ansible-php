@@ -1,0 +1,19 @@
+---
+
+- name: APT | Install php-apcu
+  apt: pkg=php5-apcu state=latest
+  when: php_version == 5
+
+- name: TEMPLATE | Configure APCu
+  template: >
+    src=etc/__php__/mods-available/opcache.ini.j2
+    dest="{{ php_mods_dir }}/opcache.ini"
+  notify: restart php-fpm
+  when: php_version == 5
+
+- name: TEMPLATE | Configure APCu
+  template: >
+    src=etc/__php__/mods-available/apcu.ini.j2
+    dest={{ php_mods_dir }}/apcu.ini
+  notify: restart php-fpm
+  when: php_version == 5

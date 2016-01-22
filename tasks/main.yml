@@ -1,40 +1,43 @@
 ---
 
+- name: ASSERT | Check variables
+  assert:
+    that: "php_version in php_managed_versions"
+
+- name: INCLUDE_VARS | Related to PHP version
+  include_vars: "php-{{ php_version }}.yml"
+
 - name: APT | Install PHP packages
   apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
   with_flattened:
     - php_packages
     - php_extra_packages
 
+# Note: only needed for PHP5x + Xdebug 
 - name: COMMAND | Get PHP extension dir
   command: php-config --extension-dir
   changed_when: false
   register: php_extension_dir
+  when: php_version == '5.6'
 
 - name: INCLUDE | PHP-FPM
   include: fpm.yml
   when: php_install_fpm
 
 - name: LINEINFILE | PHP configuration
-  lineinfile: dest=/etc/php5/cli/php.ini regexp='^;?{{ item.key }}' line='{{ item.key }} = {{ item.value }}'
+  lineinfile: >
+    dest='{{ php_etc_dir }}/cli/php.ini'
+    regexp='^;?{{ item.key }}'
+    line='{{ item.key }} = {{ item.value }}'
   with_flattened:
     - php_ini
     - php_ini_cli
 
+# Note: Xdebug is not packaged on PHP7.0
 - name: INCLUDE | Xdebug
   include: xdebug.yml
-  when: php_install_xdebug
+  when: php_install_xdebug and php_version == 5
 
-- name: SHELL | Get PHP version on apt
-  shell: php -v | head -n 1 | awk '{ print $2 }'
-  register: php_apt_version
-  changed_when: false
-
-- name: APT | Install and configure php-apcu / opcache (PHP 5.5+ only)
-  include: php55min.yml
-  when: php_apt_version.stdout|version_compare('5.5', 'ge', False)
-
-- name: APT | Install and configure php-apc (PHP 5.4 max only)
-  include: php54max.yml
-  when: php_apt_version.stdout|version_compare('5.5', 'lt', False)
+- name: APT | Install and configure opcache
+  include: opcache.yml
 
