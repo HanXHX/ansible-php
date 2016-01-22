@@ -1,5 +1,5 @@
 FROM williamyeh/ansible:debian8-onbuild
 
-RUN apt-get update
+RUN apt-get update && ansible-galaxy install HanXHX.dotdeb
 CMD ["sh", "tests/test.sh", "php-5.6"]
 
