@@ -5,14 +5,14 @@
 DIR=$( dirname $0 )
 INVENTORY_FILE="$DIR/inventory"
 PLAYBOOK="$DIR/test.yml"
-ANSIBLE_ARG=""
+ANSIBLE_ARG="localhost"
 
 set -ev
 
 # Only for travis
 if [ -n "$1" ]
 then
-	ANSIBLE_ARG="--extra-vars 'php_version=$1'"
+	ANSIBLE_ARG="--limit $1"
 fi
 
 
