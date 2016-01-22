@@ -6,8 +6,11 @@
 Vagrant.configure("2") do |config|
 
   vms = [
-    [ "debian-wheezy", "deb/wheezy-amd64" , "192.168.33.87" ],
-    [ "debian-jessie", "deb/jessie-amd64", "192.168.33.88" ]
+    [ "wheezy-php54", "deb/wheezy-amd64" , "192.168.33.87" ],
+    [ "jessie-php56", "deb/jessie-amd64", "192.168.33.88" ],
+    [ "jessie-php70", "deb/jessie-amd64", "192.168.33.89" ],
+    [ "stretch-php56", "sharlak/debian_stretch_64", "192.168.33.90" ],
+    [ "stretch-php70", "sharlak/debian_stretch_64", "192.168.33.91" ]
   ]
 
   config.vm.provider "virtualbox" do |v|
