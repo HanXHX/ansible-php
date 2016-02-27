@@ -33,10 +33,9 @@
     - php_ini
     - php_ini_cli
 
-# Note: Xdebug is not packaged on PHP7.0
 - name: INCLUDE | Xdebug
   include: xdebug.yml
-  when: php_install_xdebug and php_version == 5
+  when: php_install_xdebug
 
 - name: APT | Install and configure opcache
   include: opcache.yml
