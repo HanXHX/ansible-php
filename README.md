@@ -3,13 +3,15 @@ Ansible PHP (+FPM) role for Debian
 
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/list#/roles/4472) [![Build Status](https://travis-ci.org/HanXHX/ansible-php.svg)](https://travis-ci.org/HanXHX/ansible-php)
 
-Install PHP (php-fpm optional) on Debian Wheezy/Jessie. Depending of your PHP version: manage APC(u) / Opcache.
+Install PHP (php-fpm optional) on Debian Jessie/Stretch. Manage APCu, Opcache, Xdebug.
+
+Managed versions: 5.6 and 7.0
 
 Requirements
 ------------
 
 If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
-On Debian Wheezy, you can use many PHP version: 5.4 from Debian repository and 5.5/5.6 from [Dotdeb](https://www.dotdeb.org). With my [dotdeb role](https://github.com/HanXHX/ansible-debian-dotdeb), you can choose which version you want.
+On Debian Jessie, if you want PHP7.0, you must use [Dotdeb](https://www.dotdeb.org). You can use my [dotdeb role](https://github.com/HanXHX/ansible-debian-dotdeb).
 
 Role Variables
 --------------
@@ -18,6 +20,7 @@ You should look at [default vars](defaults/main.yml).
 
 ### Writable vars
 
+- `php_version`: 5.6 (default) or 7.0
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
 - `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
@@ -35,7 +38,7 @@ Note:
 - You can override with `php_ini_fpm`/`php_ini_cli`, but it breaks idempotence.
 
 
-#### OpCache settings (PHP >= 5.5)
+#### OpCache settings
 
 See [Opcache doc](https://secure.php.net/manual/en/opcache.configuration.php)
 
@@ -119,7 +122,6 @@ See [Xdebug doc](http://xdebug.org/docs/all_settings)
 - `php_xdebug_var_display_max_data`
 - `php_xdebug_var_display_max_depth`
 
-
 ### Read only vars
 
 - `php_packages`: minimal package list to install
@@ -140,12 +142,12 @@ Example Playbook
       roles:
          - { role: HanXHX.php }
 
-### Debian Wheezy with PHP 5.5 CLI (no FPM)
+### Debian Jessie with PHP 7.0 CLI (no FPM)
 
-    - hosts: wheezy-servers
+    - hosts: jessie-servers
       roles:
-         - { role: HanXHX.dotdeb, dotdeb_php_version: "5.5" }
-         - { role: HanXHX.php, php_install_fpm: false }
+         - { role: HanXHX.dotdeb }
+         - { role: HanXHX.php, php_version: '7.0', php_install_fpm: false }
 
 License
 -------
@@ -155,6 +157,5 @@ GPLv2
 Author Information
 ------------------
 
-- You can find many other roles in my GitHub "lab": https://github.com/HanXHX/my-ansible-playbooks
-- All issues, pull-request are welcome :)
-
+- Twitter: [@hanxhx_](https://twitter.com/hanxhx_)
+- All issues, pull-requests are welcome :)
