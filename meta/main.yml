@@ -4,14 +4,16 @@ galaxy_info:
   description: Install and configure PHP 5.6/7.0 (+ FPM is wanted)
   company:
   license: GPLv2
-  min_ansible_version: 2.0
+  min_ansible_version: 1.9
   platforms:
   - name: Debian
     versions:
     - wheezy
     - jessie
-  categories:
+  galaxy_tags:
   - development
   - web
+  - php
+  - debian
 dependencies: []
 
