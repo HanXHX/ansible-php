@@ -1,10 +1,11 @@
 ---
 
-- name: APT | Install APCu / Opcache
-  apt: pkg={{ item }} state=latest
-  with_items:
-    - "{{ php_apt_prefix }}apcu"
-    - "{{ php_apt_prefix }}opcache"
+- name: APT | Install APCu
+  apt: pkg="{{ php_apt_prefix }}apcu" state=present
+
+- name: APT | Install Opcache
+  apt: pkg="{{ php_apt_prefix }}opcache" state=present
+  when: php_version | version_compare('7.0', 'ge')
 
 - name: TEMPLATE | Configure APCu
   template: >
