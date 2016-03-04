@@ -1,12 +1,5 @@
 ---
 
-# On Debian Jessie, we need Dotdeb for PHP 7.0
-- hosts: php-7.0
-  roles:
-    - role: HanXHX.dotdeb
-      when: >
-        ansible_distribution_major_version | version_compare(8, 'eq')
-
 - hosts: all
   vars:
     vhost: 'test.local'
@@ -14,6 +7,11 @@
       - '{{ php_apt_prefix }}recode'
     php_install_xdebug: true
   pre_tasks:
+    - name: APT | Add Dotdeb repository for Jessie + PHP7
+      apt_repository: repo='deb http://packages.dotdeb.org jessie all' state=present
+      when: >
+        ansible_distribution_major_version | version_compare(8, 'eq') and
+        php_version | version_compare('7.0', 'ge')
     - name: APT | Install nginx
       apt: pkg=nginx state=present update_cache=yes cache_valid_time=3600
     - name: SHELL | Get nginx version

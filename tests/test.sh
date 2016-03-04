@@ -12,7 +12,7 @@ set -ev
 # Only for travis
 if [ -n "$1" ]
 then
-	ANSIBLE_ARG="--limit $1"
+	ANSIBLE_ARG="-e 'php_version: $1'"
 fi
 
 
