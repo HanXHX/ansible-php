@@ -1,6 +1,6 @@
 env:
-  - PLATFORM=debian-wheezy
-  - PLATFORM=debian-jessie
+  - PLATFORM=debian-jessie-php-5.6
+  - PLATFORM=debian-jessie-php-7.0
 
 sudo: required
 

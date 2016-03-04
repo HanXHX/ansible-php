@@ -1,13 +1,21 @@
 ---
 
 - name: APT | Install php-xdebug
-  apt: pkg=php5-xdebug state=latest update_cache=yes cache_valid_time=3600
+  apt: >
+    pkg="{{ php_apt_prefix }}xdebug"
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
 
 - name: SHELL | Get Xdebug version
-  shell: dpkg -l | awk '$2 ~ /^php5-xdebug$/ { print $3 }'
+  shell: dpkg -l | awk '$2 ~ /xdebug$/ { print $3 }'
   changed_when: false
   register: xdebug_version
 
 - name: TEMPLATE | Deploy module configurations
-  template: src=etc/php5/mods-available/xdebug.ini.j2 dest=/etc/php5/mods-available/xdebug.ini owner=root mode=0644
+  template: >
+    src=etc/__php__/mods-available/xdebug.ini.j2
+    dest={{ php_mods_dir }}/xdebug.ini
+    owner=root
+    mode=0644
   notify: restart php-fpm

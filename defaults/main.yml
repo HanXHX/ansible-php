@@ -1,5 +1,6 @@
 ---
 
+php_version: '5.6'
 php_install_fpm: true
 php_install_xdebug: false
 php_extra_packages: []
@@ -15,7 +16,7 @@ php_ini:
 php_ini_fpm: []
 php_ini_cli: []
 
-# OpCache settings (PHP >= 5.5)
+# OpCache settings
 php_opcache_enable: "1"
 php_opcache_enable_cli: "0"
 php_opcache_memory_consumption: "96"
@@ -92,7 +93,7 @@ php_xdebug_var_display_max_depth: '3'
 # PHP-FPM
 php_fpm_poold:
   - pool_name: 'www'
-    listen: '/var/run/php5-fpm.sock'
+    listen: '{{ php_default_fpm_sock }}'
     pm: 'dynamic'
     pm_max_children: 250
     pm_start_servers: 10

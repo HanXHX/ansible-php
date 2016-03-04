@@ -4,17 +4,20 @@
 
 DIR=$( dirname $0 )
 PLAYBOOK="$DIR/test.yml"
+ANSIBLE_ARG="localhost"
 
 set -ev
+
+ansible --version
 
 # Check syntax
 ansible-playbook -i localhost, -c local --syntax-check -vv $PLAYBOOK
 
 # Check role
-ansible-playbook -i localhost, -c local --sudo -vv $PLAYBOOK
+ansible-playbook -i localhost, -c local -e "php_version=$1" --become -vv $PLAYBOOK
 
 # Check indempotence
-ansible-playbook -i localhost, -c local --sudo -vv $PLAYBOOK \
+ansible-playbook -i localhost, -c local -e "php_version=$1" --become -vv $PLAYBOOK \
 | grep -q 'changed=0.*failed=0' \
 && (echo 'Idempotence test: pass' && exit 0) \
 || (echo 'Idempotence test: fail' && exit 1)

@@ -1,11 +1,14 @@
 ---
 
 php_packages:
-  - php5-cli
-  - php5-curl
-  - php5-gd
-  - php5-mcrypt
-  - php5-mysqlnd
-  - php5-intl
-  - php5-dev
+  - '{{ php_apt_prefix }}cli'
+  - '{{ php_apt_prefix }}curl'
+  - '{{ php_apt_prefix }}gd'
+  - '{{ php_apt_prefix }}mcrypt'
+  - '{{ php_mysql_package }}'
+  - '{{ php_apt_prefix }}intl'
+  - '{{ php_apt_prefix }}dev'
 
+php_managed_versions:
+  - '5.6'
+  - '7.0'

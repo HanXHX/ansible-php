@@ -1,5 +1,5 @@
 ---
 
 - name: restart php-fpm
-  action: service name=php5-fpm state=restarted
+  service: name='{{ php_fpm_service }}' state=restarted
   when: php_install_fpm

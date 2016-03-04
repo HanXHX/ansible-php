@@ -4,9 +4,19 @@
   vars:
     vhost: 'test.local'
     php_extra_packages:
-      - 'php5-memcached'
+      - '{{ php_apt_prefix }}recode'
     php_install_xdebug: true
   pre_tasks:
+    - name: APT | Install DotDeb key
+      apt_key: url='http://www.dotdeb.org/dotdeb.gpg' state=present
+      when: >
+        ansible_distribution_major_version | version_compare(8, 'eq') and
+        php_version | version_compare('7.0', 'ge')
+    - name: APT | Add Dotdeb repository for Jessie + PHP7
+      apt_repository: repo='deb http://packages.dotdeb.org jessie all' state=present
+      when: >
+        ansible_distribution_major_version | version_compare(8, 'eq') and
+        php_version | version_compare('7.0', 'ge')
     - name: APT | Install nginx
       apt: pkg=nginx state=present update_cache=yes cache_valid_time=3600
     - name: SHELL | Get nginx version
@@ -17,10 +27,11 @@
       when: nginx_version.stdout | version_compare('1.6', '<', true)
     - set_fact: nginx_include="fastcgi.conf"
       when: nginx_version.stdout | version_compare('1.6', '>=', true)
+  tasks:
     - name: COPY | Vhost
       copy: >
         dest=/etc/nginx/sites-enabled/{{ vhost }}
-        content='server { server_name {{ vhost }}; root /var/www; location ~ \.php$ { include {{ nginx_include }}; fastcgi_pass unix:/var/run/php5-fpm.sock;  } }'
+        content='server { server_name {{ vhost }}; root /var/www; location ~ \.php$ { include {{ nginx_include }}; fastcgi_pass unix:{{ php_default_fpm_sock }};  } }'
       notify: reload nginx
   handlers:
     - name: reload nginx
@@ -31,10 +42,14 @@
     - name: SHELL | Test php-cli
       shell: php -i | grep '^PHP Version' | head -n 1
       changed_when: false
+      register: p
+      failed_when: p.stdout == ''
     - name: FILE | Create /var/www
       file: dest=/var/www state=directory
     - name: COPY | Add phpinfo
       copy: dest=/var/www/phpinfo.php content='<?php phpinfo();'
     - name: SHELL | Check vhost
-      shell: "curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version 5.*<' | sed -r 's/<//g'"
+      shell: "curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version [57].*<' | sed -r 's/<//g'"
       changed_when: false
+      register: c
+      failed_when: c.stdout == ''

@@ -1,0 +1,20 @@
+---
+
+- name: APT | Install APCu
+  apt: pkg="{{ php_apt_prefix }}apcu" state=present
+
+- name: APT | Install Opcache
+  apt: pkg="{{ php_apt_prefix }}opcache" state=present
+  when: php_version | version_compare('7.0', 'ge')
+
+- name: TEMPLATE | Configure APCu
+  template: >
+    src=etc/__php__/mods-available/opcache.ini.j2
+    dest="{{ php_mods_dir }}/opcache.ini"
+  notify: restart php-fpm
+
+- name: TEMPLATE | Configure APCu
+  template: >
+    src=etc/__php__/mods-available/apcu.ini.j2
+    dest={{ php_mods_dir }}/apcu.ini
+  notify: restart php-fpm
