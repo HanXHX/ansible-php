@@ -7,6 +7,11 @@
       - '{{ php_apt_prefix }}recode'
     php_install_xdebug: true
   pre_tasks:
+    - name: APT | Install DotDeb key
+      apt_key: url='http://www.dotdeb.org/dotdeb.gpg' state=present
+      when: >
+        ansible_distribution_major_version | version_compare(8, 'eq') and
+        php_version | version_compare('7.0', 'ge')
     - name: APT | Add Dotdeb repository for Jessie + PHP7
       apt_repository: repo='deb http://packages.dotdeb.org jessie all' state=present
       when: >
