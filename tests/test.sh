@@ -9,23 +9,16 @@ ANSIBLE_ARG="localhost"
 
 set -ev
 
-# Only for travis
-if [ -n "$1" ]
-then
-	ANSIBLE_ARG="-e 'php_version: $1'"
-fi
-
-
 ansible --version
 
 # Check syntax
-ansible-playbook -i $INVENTORY_FILE -c local $ANSIBLE_ARG --syntax-check -vv $PLAYBOOK
+ansible-playbook -i $INVENTORY_FILE -c local --syntax-check -vv $PLAYBOOK
 
 # Check role
-ansible-playbook -i $INVENTORY_FILE -c local $ANSIBLE_ARG --become -vv $PLAYBOOK
+ansible-playbook -i $INVENTORY_FILE -c local -e "php_version: $1" --become -vv $PLAYBOOK
 
 # Check indempotence
-ansible-playbook -i $INVENTORY_FILE -c local $ANSIBLE_ARG --become -vv $PLAYBOOK \
+ansible-playbook -i $INVENTORY_FILE -c local -e "php_version: $1" --become -vv $PLAYBOOK \
 | grep -q 'changed=0.*failed=0' \
 && (echo 'Idempotence test: pass' && exit 0) \
 || (echo 'Idempotence test: fail' && exit 1)
