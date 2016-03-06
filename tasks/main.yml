@@ -13,13 +13,6 @@
     - "{{ php_packages }}"
     - "{{ php_extra_packages }}"
 
-# Note: only needed for PHP5x + Xdebug 
-- name: COMMAND | Get PHP extension dir
-  command: php-config --extension-dir
-  changed_when: false
-  register: php_extension_dir
-  when: php_version == '5.6'
-
 - name: INCLUDE | PHP-FPM
   include: fpm.yml
   when: php_install_fpm

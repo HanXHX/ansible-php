@@ -4,11 +4,7 @@
 
 ; configuration for php xdebug module
 ; priority=20
-{% if php_version | version_compare('7.0', 'ge') %}
 zend_extension=xdebug.so
-{% else %}
-zend_extension={{ php_extension_dir.stdout }}/xdebug.so
-{% endif %}
 
 {% if xdebug_version.stdout|version_compare('2.3', 'gt') %}
 {% endif %}
