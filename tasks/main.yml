@@ -10,8 +10,8 @@
 - name: APT | Install PHP packages
   apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
   with_flattened:
-    - php_packages
-    - php_extra_packages
+    - "{{ php_packages }}"
+    - "{{ php_extra_packages }}"
 
 # Note: only needed for PHP5x + Xdebug 
 - name: COMMAND | Get PHP extension dir
@@ -30,8 +30,8 @@
     regexp='^;?{{ item.key }}'
     line='{{ item.key }} = {{ item.value }}'
   with_flattened:
-    - php_ini
-    - php_ini_cli
+    - "{{ php_ini }}"
+    - "{{ php_ini_cli }}"
 
 - name: INCLUDE | Xdebug
   include: xdebug.yml

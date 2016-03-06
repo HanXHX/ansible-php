@@ -9,13 +9,13 @@
     regexp='^;?{{ item.key }}'
     line='{{ item.key }} = {{ item.value }}'
   with_flattened:
-    - php_ini
-    - php_ini_fpm
+    - "{{ php_ini }}"
+    - "{{ php_ini_fpm }}"
   notify: restart php-fpm
 
 - name: TEMPLATE | Deploy pool configuration
   template: >
     src=etc/__php__/fpm/pool.d/pool.conf.j2
     dest='{{ php_etc_dir }}/fpm/pool.d/{{ item.pool_name }}.conf'
-  with_items: php_fpm_poold
+  with_items: "{{ php_fpm_poold }}"
   notify: restart php-fpm
