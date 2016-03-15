@@ -1,7 +1,7 @@
 Ansible PHP (+FPM) role for Debian
 ==================================
 
-[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/list#/roles/4472) [![Build Status](https://travis-ci.org/HanXHX/ansible-php.svg?branch=master)](https://travis-ci.org/HanXHX/ansible-php)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/HanXHX/php) [![Build Status](https://travis-ci.org/HanXHX/ansible-php.svg?branch=master)](https://travis-ci.org/HanXHX/ansible-php)
 
 Install PHP (php-fpm optional) on Debian Jessie/Stretch. Manage APCu, Opcache, Xdebug.
 
