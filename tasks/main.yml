@@ -7,8 +7,12 @@
 - name: INCLUDE_VARS | Related to PHP version
   include_vars: "php-{{ php_version }}.yml"
 
+- name: APT | Update cache
+  apt: update_cache=yes cache_valid_time=3600
+  changed_when: false
+
 - name: APT | Install PHP packages
-  apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
+  apt: pkg={{ item }} state=present
   with_flattened:
     - "{{ php_packages }}"
     - "{{ php_extra_packages }}"
