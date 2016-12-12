@@ -1,7 +1,3 @@
-;
-; {{ ansible_managed }}
-;
-
 ; configuration for php ZendOpcache module
 ; priority=05
 zend_extension=opcache.so
@@ -15,3 +11,7 @@ opcache.max_wasted_percentage={{ php_opcache_max_wasted_percentage }}
 opcache.validate_timestamps={{ php_opcache_validate_timestamps }}
 opcache.revalidate_freq={{ php_opcache_revalidate_freq }}
 opcache.max_file_size={{ php_opcache_max_file_size }}
+
+;
+; {{ ansible_managed }}
+;
