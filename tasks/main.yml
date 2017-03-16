@@ -16,6 +16,7 @@
   with_flattened:
     - "{{ php_packages }}"
     - "{{ php_extra_packages }}"
+  notify: restart php-fpm
 
 - name: INCLUDE | PHP-FPM
   include: fpm.yml
