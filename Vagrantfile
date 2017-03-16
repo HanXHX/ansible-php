@@ -8,6 +8,7 @@ Vagrant.configure("2") do |config|
   vms = [
     [ "jessie-php-5.6", "debian/contrib-jessie64", "192.168.33.88", "5.6" ],
     [ "jessie-php-7.0", "debian/contrib-jessie64", "192.168.33.89", "7.0" ],
+    [ "jessie-php-7.1", "debian/contrib-jessie64", "192.168.33.89", "7.1" ],
     [ "stretch-php-5.6", "sharlak/debian_stretch_64", "192.168.33.90", "5.6" ],
     [ "stretch-php-7.0", "sharlak/debian_stretch_64", "192.168.33.91", "7.0" ]
   ]

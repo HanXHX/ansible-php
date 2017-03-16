@@ -5,7 +5,7 @@ Ansible PHP (+FPM) role for Debian
 
 Install PHP (php-fpm optional) on Debian Jessie/Stretch. Manage APCu, Opcache, Xdebug.
 
-Managed versions: 5.6 and 7.0
+Managed versions: 5.6, 7.0, 7.1
 
 Requirements
 ------------
@@ -20,7 +20,7 @@ You should look at [default vars](defaults/main.yml).
 
 ### Writable vars
 
-- `php_version`: 5.6 (default) or 7.0
+- `php_version`: 5.6 (default), 7.0, 7.1
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
 - `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
