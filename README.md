@@ -3,9 +3,15 @@ Ansible PHP (+FPM) role for Debian
 
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/HanXHX/php) [![Build Status](https://travis-ci.org/HanXHX/ansible-php.svg?branch=master)](https://travis-ci.org/HanXHX/ansible-php)
 
-Install PHP (php-fpm optional) on Debian Jessie/Stretch. Manage APCu, Opcache, Xdebug.
+Install PHP (php-fpm optional) on Debian. Manage APCu, Opcache, Xdebug.
 
-Managed versions: 5.6, 7.0, 7.1
+Managed OS / Versions
+---------------------
+
+|       OS      	|      PHP 5.6      	|          PHP 7.0          	|          PHP 7.1          	|
+|:-------------:	|:-----------------:	|:-------------------------:	|:-------------------------:	|
+| Debian Jessie 	| Yes (from Debian) 	| Yes (from Dotdeb or Sury) 	| Yes (from Dotdeb or Sury) 	|
+| Debian Strech 	| No                	| Yes (from Debian)         	| Yes (from Sury)           	|
 
 Requirements
 ------------

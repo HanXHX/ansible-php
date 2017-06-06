@@ -5,32 +5,53 @@
 
 Vagrant.configure("2") do |config|
 
-  vms = [
-    [ "jessie-php-5.6", "debian/contrib-jessie64", "192.168.33.88", "5.6" ],
-    [ "jessie-php-7.0", "debian/contrib-jessie64", "192.168.33.89", "7.0" ],
-    [ "jessie-php-7.1", "debian/contrib-jessie64", "192.168.33.89", "7.1" ],
-    [ "stretch-php-5.6", "sharlak/debian_stretch_64", "192.168.33.90", "5.6" ],
-    [ "stretch-php-7.0", "sharlak/debian_stretch_64", "192.168.33.91", "7.0" ]
+  vms_debian = [
+    { :name => "debian-jessie-php56",  :box => "debian/jessie64",  :vars => { "php_version": '5.6' }},
+    { :name => "debian-jessie-php70",  :box => "debian/jessie64",  :vars => { "php_version": '7.0' }},
+    { :name => "debian-jessie-php71",  :box => "debian/jessie64",  :vars => { "php_version": '7.1' }},
+    { :name => "debian-stretch-php70", :box => "debian/stretch64", :vars => { "php_version": '7.0' }},
+    { :name => "debian-stretch-php71", :box => "debian/stretch64", :vars => { "php_version": '7.1' }}
   ]
 
-  config.vm.provider "virtualbox" do |v|
-    v.cpus = 1
-    v.memory = 256
-  end
+  conts = [
+    { :name => "docker-debian-jessie-php56",  :docker => "hanxhx/vagrant-ansible:debian8", :vars => { "php_version": '5.6' }},
+    { :name => "docker-debian-jessie-php70",  :docker => "hanxhx/vagrant-ansible:debian8", :vars => { "php_version": '7.0' }},
+    { :name => "docker-debian-jessie-php71",  :docker => "hanxhx/vagrant-ansible:debian8", :vars => { "php_version": '7.1' }},
+    { :name => "docker-debian-stretch-php70", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { "php_version": '7.0' }},
+    { :name => "docker-debian-stretch-php71", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { "php_version": '7.1' }}
+  ]
 
-  vms.each do |vm|
-    config.vm.define vm[0] do |m|
-      m.vm.box = vm[1]
-      m.vm.network "private_network", ip: vm[2]
+  config.vm.network "private_network", type: "dhcp"
 
+  conts.each do |opts|
+    config.vm.define opts[:name] do |m|
+      m.vm.provider "docker" do |d|
+        d.image = opts[:docker]
+        d.remains_running = true
+        d.has_ssh = true
+      end
       m.vm.provision "ansible" do |ansible|
         ansible.playbook = "tests/test.yml"
         ansible.verbose = 'vv'
         ansible.sudo = true
-        ansible.extra_vars = {
-          php_version: vm[3]
-        }
+        ansible.extra_vars = opts[:vars]
       end
+    end
+  end
+
+  vms_debian.each do |opts|
+    config.vm.define opts[:name] do |m|
+      m.vm.box = opts[:box]
+      m.vm.provider "virtualbox" do |v|
+        v.cpus = 1
+        v.memory = 256
+      end
+       m.vm.provision "ansible" do |ansible|
+         ansible.playbook = "tests/test.yml"
+         ansible.verbose = 'vv'
+         ansible.sudo = true
+          ansible.extra_vars = opts[:vars]
+       end
     end
   end
 end

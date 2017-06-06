@@ -3,7 +3,7 @@
 - name: APT | Install php-xdebug
   apt: >
     pkg="{{ php_apt_prefix }}xdebug"
-    state=latest
+    state=present
     update_cache=yes
     cache_valid_time=3600
 

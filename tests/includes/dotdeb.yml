@@ -1,0 +1,7 @@
+---
+
+- name: APT | Install DotDeb key
+  apt_key: url='http://www.dotdeb.org/dotdeb.gpg' state=present
+
+- name: APT | Add Dotdeb repository
+  apt_repository: repo='deb http://packages.dotdeb.org {{ ansible_distribution_release }} all' state=present
