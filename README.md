@@ -10,14 +10,13 @@ Managed OS / Versions
 
 |       OS      	|      PHP 5.6      	|          PHP 7.0          	|          PHP 7.1          	|
 |:-------------:	|:-----------------:	|:-------------------------:	|:-------------------------:	|
-| Debian Jessie 	| Yes (from Debian) 	| Yes (from Dotdeb or Sury) 	| Yes (from Dotdeb or Sury) 	|
-| Debian Strech 	| No                	| Yes (from Debian)         	| Yes (from Sury)           	|
+| Debian Jessie 	| Yes (from Debian) 	| Yes (from [Dotdeb](https://www.dotdeb.org) or [Sury](https://deb.sury.org/)) 	| Yes (from [Dotdeb](https://www.dotdeb.org) or [Sury](https://deb.sury.org/)) 	|
+| Debian Strech 	| No                	| Yes (from Debian)         	| Yes (from [Sury](https://deb.sury.org/))           	|
 
 Requirements
 ------------
 
 If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
-On Debian Jessie, if you want PHP7.0, you must use [Dotdeb](https://www.dotdeb.org). You can use my [dotdeb role](https://github.com/HanXHX/ansible-debian-dotdeb).
 
 Role Variables
 --------------
