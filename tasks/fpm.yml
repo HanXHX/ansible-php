@@ -1,7 +1,7 @@
 ---
 
 - name: APT | Install PHP-FPM
-  apt: pkg={{ php_fpm_service }} state=latest
+  apt: pkg={{ php_fpm_service }} state=present
 
 - name: LINEINFILE | PHP configuration
   lineinfile: >
