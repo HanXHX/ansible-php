@@ -58,7 +58,7 @@
   post_tasks:
 
     - name: SHELL | Test php-cli
-      shell: php -i | grep '^PHP Version' | head -n 1
+      shell: php -i | grep '^PHP Version => {{ php_version }}' | head -n 1
       changed_when: false
       register: p
       failed_when: p.stdout == ''

@@ -1,6 +1,6 @@
 ---
 
-php_version: '5.6'
+php_version: '{{ php_default_version }}'
 php_install_fpm: true
 php_install_xdebug: false
 php_extra_packages: []
@@ -100,3 +100,5 @@ php_fpm_poold:
     pm_min_spare_servers: 10
     pm_max_spare_servers: 20
 
+# Hack
+php_default_version: 'NONE'

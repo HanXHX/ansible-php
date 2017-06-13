@@ -1,5 +1,8 @@
 ---
 
+- name: INCLUDE_VARS | Related to OS
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+
 - name: ASSERT | Check variables
   assert:
     that: "php_version in php_managed_versions"
