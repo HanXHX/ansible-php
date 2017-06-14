@@ -7,8 +7,3 @@ php_packages:
   - '{{ php_apt_prefix }}mcrypt'
   - '{{ php_mysql_package }}'
   - '{{ php_apt_prefix }}intl'
-
-php_managed_versions:
-  - '5.6'
-  - '7.0'
-  - '7.1'
