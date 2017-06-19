@@ -16,8 +16,6 @@ galaxy_info:
   - php5.6
   - php5
   - php7
-  - php7.0
-  - php7.1
   - debian
 dependencies: []
 
