@@ -8,10 +8,14 @@ Install PHP (php-fpm optional) on Debian. Manage APCu, Opcache, Xdebug.
 Managed OS / Versions
 ---------------------
 
-|       OS      	|      PHP 5.6      	|          PHP 7.0          	|          PHP 7.1          	|
-|:-------------:	|:-----------------:	|:-------------------------:	|:-------------------------:	|
-| Debian Jessie 	| Yes (from Debian) 	| Yes (from [Dotdeb](https://www.dotdeb.org) or [Sury](https://deb.sury.org/)) 	| Yes (from [Dotdeb](https://www.dotdeb.org) or [Sury](https://deb.sury.org/)) 	|
-| Debian Strech 	| No                	| Yes (from Debian)         	| Yes (from [Sury](https://deb.sury.org/))           	|
+|       OS      |  PHP 5.6  |          PHP 7.0          |        PHP 7.1        |    PHP 7.2   |
+|:-------------:|:---------:|:-------------------------:|:---------------------:|:------------:|
+| Debian Jessie | Yes       | Yes (from Dotdeb or Sury) | Yes (Dotdeb or Sury)  | Yes (Sury)   |
+| Debian Strech | No        | Yes                       | Yes (Sury)            | Yes (Sury)   |
+
+Links:
+- [Dotdeb](https://www.dotdeb.org)
+- [Sury](https://deb.sury.org/)
 
 Requirements
 ------------
