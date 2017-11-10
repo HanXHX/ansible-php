@@ -7,14 +7,11 @@ php_extra_packages: []
 
 # php.ini config
 php_ini:
-  - key: 'date.timezone'
-    value: 'Europe/Paris'
-  - key: 'expose_php'
-    value: 'Off'
-  - key: 'memory_limit'
-    value: '256M'
-php_ini_fpm: []
-php_ini_cli: []
+  'date.timezone': 'Europe/Paris'
+  'expose_php': 'Off'
+  'memory_limit': '256M'
+php_ini_fpm: {}
+php_ini_cli: {}
 
 # OpCache settings
 php_opcache_enable: "1"

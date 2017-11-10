@@ -6,6 +6,10 @@
     php_extra_packages:
       - '{{ php_apt_prefix }}recode'
     php_install_xdebug: true
+    php_ini_fpm:
+      display_errors: 'Off'
+    php_ini_cli:
+      error_reporting: 'E_ALL'
 
   pre_tasks:
 
