@@ -10,6 +10,17 @@
       display_errors: 'Off'
     php_ini_cli:
       error_reporting: 'E_ALL'
+    php_fpm_poold:
+      - pool_name: 'www'
+        listen: '{{ php_default_fpm_sock }}'
+        pm: 'dynamic'
+        pm_max_children: 250
+        pm_start_servers: 10
+        pm_min_spare_servers: 10
+        pm_max_spare_servers: 20
+        status_path: '/status'
+        ping_path: '/ping'
+        ping_response: 'ok'
 
   pre_tasks:
 
@@ -45,10 +56,16 @@
 
   tasks:
 
-    - name: COPY | Vhost
-      copy: >
-        dest=/etc/nginx/sites-enabled/{{ vhost }}
-        content='server { server_name {{ vhost }}; root /var/www; location ~ \.php$ { include {{ nginx_include }}; fastcgi_pass unix:{{ php_default_fpm_sock }};  } }'
+    - name: TEMPLATE | Nginx site config
+      template:
+        src: templates/site.j2
+        dest: /etc/nginx/sites-enabled/{{ vhost }}
+      notify: reload nginx
+
+    - name: FILE | Delete default site
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
       notify: reload nginx
 
   handlers:
@@ -80,3 +97,13 @@
       changed_when: false
       register: c
       failed_when: c.stdout == ''
+
+    - name: URI | Check ping
+      uri:
+        url: "http://localhost{{ php_fpm_poold.0.ping_path }}"
+      when: php_fpm_poold.0.ping_path is defined
+
+    - name: URI | Check status
+      uri:
+        url: "http://localhost{{ php_fpm_poold.0.status_path }}"
+      when: php_fpm_poold.0.status_path is defined
