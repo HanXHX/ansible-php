@@ -34,8 +34,6 @@
 
 - name: INCLUDE | Xdebug
   include: xdebug.yml
-  when: php_install_xdebug
 
 - name: APT | Install and configure opcache
   include: opcache.yml
-
