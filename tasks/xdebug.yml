@@ -26,10 +26,13 @@
 
 - block:
 
-  - name: APT | Uninstall php-xdebug
-    apt:
-      pkg: "{{ php_apt_prefix }}xdebug"
-      state: absent
-    notify: restart php-fpm
+# We can't uninstall as simple way. We can uninstall with php7.0-xdebug (virtual package), but removing virtual package doesn't affect real package.
+# On Jessie: php5-xdebug, php-xdebug (sury for PHP 5.6/7.0/7.1/7.2), php5-xdebug + php7.0-xdebug (dotdeb)
+# On Stretch: php-xdebug
+
+  - name: COMMAND | Disable xdebug package
+    command: phpdismod -v {{ php_version }} xdebug
+    args:
+      removes: "{{ php_etc_dir }}/cli/conf.d/20-xdebug.ini"
 
   when: not php_install_xdebug
