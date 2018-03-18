@@ -1,5 +1,5 @@
-Ansible PHP (+FPM) role for Debian / Ubuntu
-===========================================
+Ansible PHP (+FPM) role for Debian / Ubuntu / FreeBSD
+=====================================================
 
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/HanXHX/php) [![Build Status](https://travis-ci.org/HanXHX/ansible-php.svg?branch=master)](https://travis-ci.org/HanXHX/ansible-php)
 
@@ -13,6 +13,8 @@ Managed OS / Versions
 | Debian Strech (9)     | Yes          | Yes (Sury)    | Yes (Sury)   |
 | Ubuntu Xenial (16.04) | Yes          | No            | No           |
 | Ubuntu Bionic (18.04) | No           | No            | Yes          |
+| FreeBSD 11            | Yes          | Yes           | Yes          |
+| FreeBSD 12            | Yes          | Yes           | Yes          |
 
 Links:
 - [Dotdeb](https://www.dotdeb.org)
@@ -22,6 +24,14 @@ Requirements
 ------------
 
 If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
+
+
+FreeBSD limitations
+-------------------
+
+- It doesn't split ini file for FPM/CLI. It's hardcoded as `/usr/local/etc/php.ini`.
+- It can't manage multiple PHP versions at the time (like old Debian versions)
+- You must explicitely set xdebug package name (use `pkg search xdebug` to find the good one)
 
 Role Variables
 --------------

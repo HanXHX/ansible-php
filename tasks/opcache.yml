@@ -1,12 +1,28 @@
 ---
 
-- name: APT | Install APCu
-  apt:
-    pkg: "{{ php_package_prefix }}apcu"
+- block:
 
-- name: APT | Install Opcache
-  apt:
-    pkg: "{{ php_package_prefix }}opcache"
+  - name: APT | Install APCu
+    apt:
+      pkg: "{{ php_package_prefix }}apcu"
+
+  - name: APT | Install Opcache
+    apt:
+      pkg: "{{ php_package_prefix }}opcache"
+
+  when: ansible_os_family == 'Debian'
+
+- block:
+
+  - name: PKGNG | Install APCu
+    pkgng:
+      name: "php{{ php_version | replace('.', '') }}-pecl-APCu"
+
+  - name: PKGNG | Install Opcache
+    pkgng:
+      name: "{{ php_package_prefix }}opcache"
+
+  when: ansible_os_family == 'FreeBSD'
 
 - name: TEMPLATE | Configure Opcache
   template:

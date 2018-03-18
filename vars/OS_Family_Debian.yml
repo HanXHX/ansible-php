@@ -7,14 +7,17 @@ php_packages:
   - '{{ php_package_prefix }}mysql'
   - '{{ php_package_prefix }}intl'
 
+php_xdebug_package: 'php-xdebug'
+
 php_package_prefix: 'php{{ php_version }}-'
 
-php_etc_dir: '/etc/php/{{ php_version }}'
-php_mods_dir: '{{ php_etc_dir }}/mods-available'
-php_fpm_pool_dir: '{{ php_etc_dir }}/fpm/pool.d'
+php_mods_dir: '/etc/php/{{ php_version }}/mods-available'
+php_fpm_pool_dir: '/etc/php/{{ php_version }}/fpm/pool.d'
 
 php_fpm_service: 'php{{ php_version }}-fpm'
 php_default_fpm_sock: '/var/run/php/php{{ php_version }}-fpm.sock'
 
-php_cli_ini: '{{ php_etc_dir }}/cli/php.ini'
-php_fpm_ini: '{{ php_etc_dir }}/fpm/php.ini'
+php_cli_ini: '/etc/php/{{ php_version }}/cli/php.ini'
+php_fpm_ini: '/etc/php/{{ php_version }}/fpm/php.ini'
+
+php_default_user_group: 'www-data'

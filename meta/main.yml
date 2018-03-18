@@ -13,6 +13,11 @@ galaxy_info:
     versions:
     - xenial
     - bionic
+  - name: FreeBSD
+    versions:
+    - 11.0
+    - 11.1
+    - 12.0
   galaxy_tags:
   - development
   - web
@@ -21,5 +26,6 @@ galaxy_info:
   - php7
   - debian
   - ubuntu
+  - freebsd
 dependencies: []
 

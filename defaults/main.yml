@@ -4,6 +4,7 @@ php_version: '{{ php_default_version }}'
 php_install_fpm: true
 php_install_xdebug: false
 php_extra_packages: []
+php_xdebug_package: null
 
 # php.ini config
 php_ini:

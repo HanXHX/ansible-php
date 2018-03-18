@@ -16,17 +16,26 @@
     - "{{ php_packages }}"
     - "{{ php_extra_packages }}"
   notify: restart php-fpm
+  when: ansible_os_family == 'Debian'
+
+- name: PKGNG | Install PHP packages
+  pkgng:
+    name: "{{ item }}"
+  with_flattened:
+    - "{{ php_packages }}"
+    - "{{ php_extra_packages }}"
+  notify: restart php-fpm
+  when: ansible_os_family == 'FreeBSD'
 
 - name: INCLUDE | PHP-FPM
   include: fpm.yml
-  when: php_install_fpm
 
-- name: LINEINFILE | PHP configuration
+- name: LINEINFILE | PHP CLI configuration
   lineinfile:
     dest: '{{ php_cli_ini }}'
     regexp: '^;?{{ item.key }}'
     line: '{{ item.key }} = {{ item.value }}'
-  with_dict: "{{ php_ini_cli }}"
+  with_dict: "{{ php_ini | combine(php_ini_cli) }}"
 
 - name: INCLUDE | Xdebug
   include: xdebug.yml

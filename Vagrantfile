@@ -13,6 +13,11 @@ Vagrant.configure("2") do |config|
     { :name => "ubuntu-bionic-php72",  :box => "ubuntu/bionic64",  :vars => { }},
   ]
 
+  vms_freebsd = [
+    { :name => "freebsd-11", :box => "freebsd/FreeBSD-11.1-STABLE",  :vars => {} },
+    { :name => "freebsd-12", :box => "freebsd/FreeBSD-12.0-CURRENT", :vars => {} }
+  ]
+
   conts = [
     { :name => "docker-debian-stretch-php70", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { }},
     { :name => "docker-debian-stretch-php71", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { "php_version": '7.1' }},
@@ -55,4 +60,24 @@ Vagrant.configure("2") do |config|
       end
     end
   end
+
+  vms_freebsd.each do |opts|
+    config.vm.base_mac = "080027D14C66"
+    config.vm.define opts[:name] do |m|
+      m.vm.box = opts[:box]
+      m.vm.provider "virtualbox" do |v, override|
+        override.ssh.shell = "csh"
+        v.cpus = 2
+        v.memory = 512
+      end
+      m.vm.provision "shell", inline: "pkg install -y python bash"
+      m.vm.provision "ansible" do |ansible|
+        ansible.playbook = "tests/test.yml"
+        ansible.verbose = 'vv'
+        ansible.become = true
+        ansible.extra_vars = opts[:vars].merge({ "ansible_python_interpreter": '/usr/local/bin/python' })
+      end
+    end
+  end
+
 end

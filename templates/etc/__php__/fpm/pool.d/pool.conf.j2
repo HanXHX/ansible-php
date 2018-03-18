@@ -20,8 +20,8 @@
 ; Unix user/group of processes
 ; Note: The user is mandatory. If the group is not set, the default user's group
 ;       will be used.
-user = {{ item.user | default('www-data') }}
-group = {{ item.group | default('www-data') }}
+user = {{ item.user | default(php_default_user_group) }}
+group = {{ item.group | default(php_default_user_group) }}
 
 ; The address on which to accept FastCGI requests.
 ; Valid syntaxes are:
@@ -46,8 +46,8 @@ listen = {{ item.listen }}
 ; BSD-derived systems allow connections regardless of permissions.
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0660
-listen.owner = {{ item.listen_owner | default('www-data') }}
-listen.group = {{ item.listen_owner | default('www-data') }}
+listen.owner = {{ item.listen_owner | default(php_default_user_group) }}
+listen.group = {{ item.listen_owner | default(php_default_user_group) }}
 ;listen.mode = 0660
 ; When POSIX Access Control Lists are supported you can set them using
 ; these options, value is a comma separated list of user/group names.

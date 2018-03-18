@@ -1,0 +1,36 @@
+events {
+    worker_connections  1024;
+}
+
+user {{ php_default_user_group }};
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+
+	server {
+		server_name {{ vhost }};
+
+		root /var/www;
+
+{% if php_fpm_poold.0.status_path is defined %}
+		location = {{ php_fpm_poold.0.status_path }} {
+			include fastcgi.conf;
+			fastcgi_pass unix:{{ php_default_fpm_sock }};
+		}
+{% endif %}
+{% if php_fpm_poold.0.ping_path is defined %}
+		location = {{ php_fpm_poold.0.ping_path }} {
+			include fastcgi.conf;
+			fastcgi_pass unix:{{ php_default_fpm_sock }};
+		}
+{% endif %}
+
+		location ~ \.php$ {
+			include fastcgi.conf;
+			fastcgi_pass unix:{{ php_default_fpm_sock }};
+		}
+	}
+}

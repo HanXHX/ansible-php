@@ -31,14 +31,21 @@
 
     - name: TEMPLATE | Nginx site config
       template:
-        src: "templates/site.j2"
-        dest: "{{ __nginx_site_dir }}/{{ vhost }}"
+        src: "templates/nginx.conf.j2"
+        dest: "{{ __nginx_conf  }}"
       notify: reload nginx
 
-    - name: FILE | Delete default site
-      file:
-        path: "{{ __nginx_site_dir }}/default"
-        state: absent
+    - name: COMMAND | Fix nginx config
+      command: "cp {{ __nginx_conf | dirname }}/fastcgi_params {{ __nginx_conf | dirname }}/fastcgi.conf"
+      args:
+        creates: "{{ __nginx_conf | dirname }}/fastcgi.conf"
+      notify: reload nginx
+
+    - name: LINEINFILE | Fix nginx config (second step)
+      lineinfile:
+        regexp: '^fastcgi_param\s+SCRIPT_FILENAME'
+        line: "fastcgi_param  SCRIPT_FILENAME    $realpath_root$fastcgi_script_name;"
+        dest: "{{ __nginx_conf | dirname }}/fastcgi.conf"
       notify: reload nginx
 
   handlers:

@@ -2,12 +2,18 @@
 
 - block:
 
-  - name: APT | Install php-xdebug
+  - name: APT | Install xdebug
     apt:
-      pkg: "{{ php_package_prefix }}xdebug"
+      pkg: "{{ php_xdebug_package }}"
       state: present
       update_cache: yes
       cache_valid_time: 3600
+    when: ansible_os_family == 'Debian'
+
+  - name: PKGNG | Install xdebug
+    pkgng:
+      name: "{{ php_xdebug_package }}"
+    when: ansible_os_family == 'FreeBSD' and php_xdebug_package is defined
 
   - name: TEMPLATE | Deploy module configurations
     template:
@@ -19,8 +25,17 @@
 
   when: php_install_xdebug
 
-- name: APT | Uninstall php-xdebug
-  apt:
-    pkg: "{{ php_package_prefix }}xdebug"
-    state: absent
+- block:
+
+  - name: APT | Uninstall xdebug
+    apt:
+      pkg: "{{ php_xdebug_package }}"
+      state: absent
+    when: ansible_os_family == 'Debian'
+
+  - name: PKGNG | Install xdebug
+    pkgng:
+      name: "{{ php_xdebug_package }}"
+    when: ansible_os_family == 'FreeBSD' and php_xdebug_package is defined
+
   when: not php_install_xdebug
