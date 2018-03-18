@@ -1,8 +1,0 @@
----
-
-php_apt_prefix: 'php5-'
-php_etc_dir: '/etc/php5'
-php_fpm_service: 'php5-fpm'
-php_default_fpm_sock: '/var/run/php5-fpm.sock'
-php_mods_dir: '/etc/php5/mods-available'
-php_mysql_package: 'php5-mysqlnd'

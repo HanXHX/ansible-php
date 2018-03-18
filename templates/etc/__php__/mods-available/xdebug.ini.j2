@@ -2,9 +2,6 @@
 ; priority=20
 zend_extension=xdebug.so
 
-{% if xdebug_version.stdout|version_compare('2.3', 'gt') %}
-{% endif %}
-
 xdebug_auto_trace={{ php_xdebug_auto_trace }}
 xdebug_cli_color={{ php_xdebug_cli_color }}
 xdebug_collect_assignments={{ php_xdebug_collect_assignments }}
@@ -29,9 +26,7 @@ xdebug_overload_var_dump={{ php_xdebug_overload_var_dump }}
 xdebug_profiler_append={{ php_xdebug_profiler_append }}
 xdebug_profiler_enable={{ php_xdebug_profiler_enable }}
 xdebug_profiler_enable_trigger={{ php_xdebug_profiler_enable_trigger }}
-{% if xdebug_version.stdout|version_compare('2.3', 'gt') %}
 xdebug_profiler_enable_trigger_value={{ php_xdebug_profiler_enable_trigger_value }}
-{% endif %}
 xdebug_profiler_output_dir={{ php_xdebug_profiler_output_dir }}
 xdebug_profiler_output_name={{ php_xdebug_profiler_output_name }}
 xdebug_remote_autostart={{ php_xdebug_remote_autostart }}
@@ -48,9 +43,7 @@ xdebug_show_exception_trace={{ php_xdebug_show_exception_trace }}
 xdebug_show_local_vars={{ php_xdebug_show_local_vars }}
 xdebug_show_mem_delta={{ php_xdebug_show_mem_delta }}
 xdebug_trace_enable_trigger={{ php_xdebug_trace_enable_trigger }}
-{% if xdebug_version.stdout|version_compare('2.3', 'gt') %}
 xdebug_trace_enable_trigger_value={{ php_xdebug_trace_enable_trigger_value }}
-{% endif %}
 xdebug_trace_format={{ php_xdebug_trace_format }}
 xdebug_trace_options={{ php_xdebug_trace_options }}
 xdebug_trace_output_dir={{ php_xdebug_trace_output_dir }}

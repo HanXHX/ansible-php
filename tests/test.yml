@@ -4,7 +4,7 @@
   vars:
     vhost: 'test.local'
     php_extra_packages:
-      - '{{ php_apt_prefix }}recode'
+      - '{{ php_package_prefix }}recode'
     php_install_xdebug: true
     php_ini_fpm:
       display_errors: 'Off'
@@ -24,54 +24,29 @@
 
   pre_tasks:
 
-    - name: APT | Install packages
-      apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
-      with_items: ['apt-transport-https', 'curl', 'lsb-release', 'ca-certificates']
-
-    - name: INCLUDE | Dotdeb
-      include: includes/dotdeb.yml
-      when: >
-        ansible_distribution_major_version | version_compare(8, 'eq') and
-        php_version | version_compare('7.0', 'eq')
-
-    - name: INCLUDE | Sury
-      include: includes/sury.yml
-      when: >
-        ansible_distribution_major_version | version_compare(9, 'le') and
-        php_version | version_compare('7.1', 'eq')
-
-    - name: APT | Install nginx
-      apt: pkg=nginx state=present update_cache=yes cache_valid_time=3600
-
-    - name: SHELL | Get nginx version
-      shell: nginx -V 2>&1 | awk -F '/' '/nginx version/ { print $2 }'
-      register: nginx_version
-      changed_when: false
-
-    - set_fact: nginx_include="fastcgi_params"
-      when: nginx_version.stdout | version_compare('1.6', '<', true)
-
-    - set_fact: nginx_include="fastcgi.conf"
-      when: nginx_version.stdout | version_compare('1.6', '>=', true)
+    - name: INCLUDE | Pre tasks related to OS
+      include: "includes/pre_{{ ansible_os_family }}.yml"
 
   tasks:
 
     - name: TEMPLATE | Nginx site config
       template:
-        src: templates/site.j2
-        dest: /etc/nginx/sites-enabled/{{ vhost }}
+        src: "templates/site.j2"
+        dest: "{{ __nginx_site_dir }}/{{ vhost }}"
       notify: reload nginx
 
     - name: FILE | Delete default site
       file:
-        path: /etc/nginx/sites-enabled/default
+        path: "{{ __nginx_site_dir }}/default"
         state: absent
       notify: reload nginx
 
   handlers:
 
     - name: reload nginx
-      service: name=nginx state=reloaded
+      service:
+        name: nginx
+        state: reloaded
 
   roles:
     - ../../
@@ -85,10 +60,14 @@
       failed_when: p.stdout == ''
 
     - name: FILE | Create /var/www
-      file: dest=/var/www state=directory
+      file:
+        dest: /var/www
+        state: directory
 
     - name: COPY | Add phpinfo
-      copy: dest=/var/www/phpinfo.php content='<?php phpinfo();'
+      copy:
+        dest: /var/www/phpinfo.php
+        content: '<?php phpinfo();'
 
     - name: SHELL | Check vhost
       shell: "curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version {{ php_version }}' | sed -r 's/<//g'"

@@ -8,10 +8,9 @@ Install PHP (php-fpm optional) on Debian. Manage APCu, Opcache, Xdebug.
 Managed OS / Versions
 ---------------------
 
-|       OS      |  PHP 5.6  |          PHP 7.0          |        PHP 7.1        |    PHP 7.2   |
-|:-------------:|:---------:|:-------------------------:|:---------------------:|:------------:|
-| Debian Jessie | Yes       | Yes (from Dotdeb or Sury) | Yes (Dotdeb or Sury)  | Yes (Sury)   |
-| Debian Strech | No        | Yes                       | Yes (Sury)            | Yes (Sury)   |
+|       OS      |   PHP 7.0    |    PHP 7.1    |    PHP 7.2   |
+|:-------------:|:------------:|:-------------:|:------------:|
+| Debian Strech | Yes          | Yes (Sury)    | Yes (Sury)   |
 
 Links:
 - [Dotdeb](https://www.dotdeb.org)
@@ -29,7 +28,7 @@ You should look at [default vars](defaults/main.yml).
 
 ### Writable vars
 
-- `php_version`: 5.6 (default), 7.0, 7.1
+- `php_version`: 7.0 (default on Stretch), 7.1, 7.2
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
 - `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
@@ -151,12 +150,12 @@ Example Playbook
       roles:
          - { role: HanXHX.php }
 
-### Debian Jessie with PHP 7.0 CLI (no FPM)
+### Debian Jessie with PHP 7.2 CLI (no FPM)
 
-    - hosts: jessie-servers
+    - hosts: servers
       roles:
-         - { role: HanXHX.dotdeb }
-         - { role: HanXHX.php, php_version: '7.0', php_install_fpm: false }
+         - { role: HanXHX.sury }
+         - { role: HanXHX.php, php_version: '7.2', php_install_fpm: false }
 
 License
 -------
@@ -169,7 +168,7 @@ Donation
 If this code helped you, or if you’ve used them for your projects, feel free to buy me some :beers:
 
 - Bitcoin: `1BQwhBeszzWbUTyK4aUyq3SRg7rBSHcEQn`
-- Ethereum: `63abe6b2648fd892816d87a31e3d9d4365a737b5`
+- Ethereum: `0x63abe6b2648fd892816d87a31e3d9d4365a737b5`
 - Litecoin: `LeNDw34zQLX84VvhCGADNvHMEgb5QyFXyD`
 - Monero: `45wbf7VdQAZS5EWUrPhen7Wo4hy7Pa7c7ZBdaWQSRowtd3CZ5vpVw5nTPphTuqVQrnYZC72FXDYyfP31uJmfSQ6qRXFy3bQ`
 
@@ -179,4 +178,3 @@ Author Information
 ------------------
 
 - Twitter: [@hanxhx_](https://twitter.com/hanxhx_)
-- All issues, pull-requests are welcome :)

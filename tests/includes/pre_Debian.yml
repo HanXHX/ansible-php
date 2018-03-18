@@ -1,0 +1,23 @@
+---
+
+- name: SET_FACT | Prepare test vars
+  set_fact:
+    __nginx_site_dir: /etc/nginx/sites-enabled
+
+- name: APT | Install packages
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - lsb-release
+    - nginx
+
+- name: INCLUDE | Sury
+  include: Debian/sury.yml
+  when: >
+    ansible_distribution_major_version | version_compare(9, 'eq') and
+    php_version | version_compare('7.1', 'ge')

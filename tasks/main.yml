@@ -1,21 +1,17 @@
 ---
 
-- name: INCLUDE_VARS | Related to OS
+- name: INCLUDE_VARS | Related to OS family
+  include_vars: "OS_Family_{{ ansible_os_family }}.yml"
+
+- name: INCLUDE_VARS | Related to OS version
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
 
-- name: ASSERT | Check variables
-  assert:
-    that: "php_version in php_managed_versions"
-
-- name: INCLUDE_VARS | Related to PHP version
-  include_vars: "php-{{ php_version }}.yml"
-
-- name: APT | Update cache
-  apt: update_cache=yes cache_valid_time=3600
-  changed_when: false
-
 - name: APT | Install PHP packages
-  apt: pkg={{ item }} state=present
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_flattened:
     - "{{ php_packages }}"
     - "{{ php_extra_packages }}"
@@ -27,7 +23,7 @@
 
 - name: LINEINFILE | PHP configuration
   lineinfile:
-    dest: '{{ php_etc_dir }}/cli/php.ini'
+    dest: '{{ php_cli_ini }}'
     regexp: '^;?{{ item.key }}'
     line: '{{ item.key }} = {{ item.value }}'
   with_dict: "{{ php_ini_cli }}"

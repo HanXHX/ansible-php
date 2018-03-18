@@ -5,19 +5,19 @@ server {
 
 {% if php_fpm_poold.0.status_path is defined %}
 	location = {{ php_fpm_poold.0.status_path }} {
-		include {{ nginx_include }};
+		include fastcgi.conf;
 		fastcgi_pass unix:{{ php_default_fpm_sock }};
 	}
 {% endif %}
 {% if php_fpm_poold.0.ping_path is defined %}
 	location = {{ php_fpm_poold.0.ping_path }} {
-		include {{ nginx_include }};
+		include fastcgi.conf;
 		fastcgi_pass unix:{{ php_default_fpm_sock }};
 	}
 {% endif %}
 
 	location ~ \.php$ {
-		include {{ nginx_include }};
+		include fastcgi.conf;
 		fastcgi_pass unix:{{ php_default_fpm_sock }};
 	}
 }

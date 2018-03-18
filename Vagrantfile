@@ -6,19 +6,15 @@
 Vagrant.configure("2") do |config|
 
   vms_debian = [
-    { :name => "debian-jessie-php56",  :box => "debian/jessie64",  :vars => { }},
-    { :name => "debian-jessie-php70",  :box => "debian/jessie64",  :vars => { "php_version": '7.0' }},
-    { :name => "debian-jessie-php71",  :box => "debian/jessie64",  :vars => { "php_version": '7.1' }},
     { :name => "debian-stretch-php70", :box => "debian/stretch64", :vars => { }},
-    { :name => "debian-stretch-php71", :box => "debian/stretch64", :vars => { "php_version": '7.1' }}
+    { :name => "debian-stretch-php71", :box => "debian/stretch64", :vars => { "php_version": '7.1' }},
+    { :name => "debian-stretch-php72", :box => "debian/stretch64", :vars => { "php_version": '7.2' }}
   ]
 
   conts = [
-    { :name => "docker-debian-jessie-php56",  :docker => "hanxhx/vagrant-ansible:debian8", :vars => { }},
-    { :name => "docker-debian-jessie-php70",  :docker => "hanxhx/vagrant-ansible:debian8", :vars => { "php_version": '7.0' }},
-    { :name => "docker-debian-jessie-php71",  :docker => "hanxhx/vagrant-ansible:debian8", :vars => { "php_version": '7.1' }},
     { :name => "docker-debian-stretch-php70", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { }},
-    { :name => "docker-debian-stretch-php71", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { "php_version": '7.1' }}
+    { :name => "docker-debian-stretch-php71", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { "php_version": '7.1' }},
+    { :name => "docker-debian-stretch-php72", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { "php_version": '7.2' }}
   ]
 
   config.vm.network "private_network", type: "dhcp"
