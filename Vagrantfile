@@ -14,11 +14,11 @@ Vagrant.configure("2") do |config|
   ]
 
   conts = [
-    { :name => "docker-debian-stretch-php70", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { }},
-    { :name => "docker-debian-stretch-php71", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { "php_version": '7.1' }},
-    { :name => "docker-debian-stretch-php72", :docker => "hanxhx/vagrant-ansible:debian9", :vars => { "php_version": '7.2' }},
-    { :name => "docker-ubuntu-xenial-php70",  :docker => "hanxhx/vagrant-ansible:16.04",   :vars => { }},
-    { :name => "docker-ubuntu-bionic-php72",  :docker => "hanxhx/vagrant-ansible:18.04",   :vars => { }},
+    { :name => "docker-debian-stretch-php70", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { }},
+    { :name => "docker-debian-stretch-php71", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.1' }},
+    { :name => "docker-debian-stretch-php72", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.2' }},
+    { :name => "docker-ubuntu-xenial-php70",  :docker => "hanxhx/vagrant-ansible:ubuntu16.04", :vars => { }},
+    { :name => "docker-ubuntu-bionic-php72",  :docker => "hanxhx/vagrant-ansible:ubuntu18.04", :vars => { }},
   ]
 
   config.vm.network "private_network", type: "dhcp"
