@@ -1,16 +1,18 @@
-Ansible PHP (+FPM) role for Debian
-==================================
+Ansible PHP (+FPM) role for Debian / Ubuntu
+===========================================
 
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/HanXHX/php) [![Build Status](https://travis-ci.org/HanXHX/ansible-php.svg?branch=master)](https://travis-ci.org/HanXHX/ansible-php)
 
-Install PHP (php-fpm optional) on Debian. Manage APCu, Opcache, Xdebug.
+Install PHP (php-fpm optional) on Debian / Ubuntu. Manage APCu, Opcache, Xdebug.
 
 Managed OS / Versions
 ---------------------
 
-|       OS      |   PHP 7.0    |    PHP 7.1    |    PHP 7.2   |
-|:-------------:|:------------:|:-------------:|:------------:|
-| Debian Strech | Yes          | Yes (Sury)    | Yes (Sury)   |
+|         OS            |   PHP 7.0    |    PHP 7.1    |    PHP 7.2   |
+|:---------------------:|:------------:|:-------------:|:------------:|
+| Debian Strech (9)     | Yes          | Yes (Sury)    | Yes (Sury)   |
+| Ubuntu Xenial (16.04) | Yes          | No            | No           |
+| Ubuntu Bionic (18.04) | No           | No            | Yes          |
 
 Links:
 - [Dotdeb](https://www.dotdeb.org)
@@ -28,7 +30,7 @@ You should look at [default vars](defaults/main.yml).
 
 ### Writable vars
 
-- `php_version`: 7.0 (default on Stretch), 7.1, 7.2
+- `php_version`: 7.0, 7.1, 7.2
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
 - `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
@@ -150,7 +152,7 @@ Example Playbook
       roles:
          - { role: HanXHX.php }
 
-### Debian Jessie with PHP 7.2 CLI (no FPM)
+### Debian Stretch with PHP 7.2 CLI (no FPM)
 
     - hosts: servers
       roles:

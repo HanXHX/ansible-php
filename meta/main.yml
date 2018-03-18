@@ -9,6 +9,10 @@ galaxy_info:
   - name: Debian
     versions:
     - stretch
+  - name: Ubuntu
+    versions:
+    - xenial
+    - bionic
   galaxy_tags:
   - development
   - web
@@ -16,5 +20,6 @@ galaxy_info:
   - php-fpm
   - php7
   - debian
+  - ubuntu
 dependencies: []
 

@@ -4,7 +4,7 @@
   include_vars: "OS_Family_{{ ansible_os_family }}.yml"
 
 - name: INCLUDE_VARS | Related to OS version
-  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml"
 
 - name: APT | Install PHP packages
   apt:
