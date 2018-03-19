@@ -4,7 +4,7 @@
 
   - name: APT | Install APCu
     apt:
-      pkg: "{{ php_package_prefix }}apcu"
+      pkg: "php-apcu"
 
   - name: APT | Install Opcache
     apt:
