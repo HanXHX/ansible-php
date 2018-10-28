@@ -8,13 +8,13 @@ Install PHP (php-fpm optional) on Debian / Ubuntu. Manage APCu, Opcache, Xdebug.
 Managed OS / Versions
 ---------------------
 
-|         OS            |   PHP 7.0    |    PHP 7.1    |    PHP 7.2   |
-|:---------------------:|:------------:|:-------------:|:------------:|
-| Debian Strech (9)     | Yes          | Yes (Sury)    | Yes (Sury)   |
-| Ubuntu Xenial (16.04) | Yes          | No            | No           |
-| Ubuntu Bionic (18.04) | No           | No            | Yes          |
-| FreeBSD 11            | Yes          | Yes           | Yes          |
-| FreeBSD 12            | Yes          | Yes           | Yes          |
+|         OS            |   PHP 7.0    |    PHP 7.1    |    PHP 7.2   |    PHP 7.3   |
+|:---------------------:|:------------:|:-------------:|:------------:|:------------:|
+| Debian Stretch (9)    | Yes          | Yes (Sury)    | Yes (Sury)   | Yes (Sury)   |
+| Ubuntu Xenial (16.04) | Yes          | No            | No           | No           |
+| Ubuntu Bionic (18.04) | No           | No            | Yes          | No           |
+| FreeBSD 11            | Yes          | Yes           | Yes          | Yes          |
+| FreeBSD 12            | Yes          | Yes           | Yes          | Yes          |
 
 Links:
 - [Dotdeb](https://www.dotdeb.org)

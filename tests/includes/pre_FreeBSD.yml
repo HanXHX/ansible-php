@@ -3,7 +3,7 @@
 - name: SET_FACT | Prepare test vars
   set_fact:
     __nginx_conf: /usr/local/etc/nginx/nginx.conf
-    php_xdebug_package: 'php72-pecl-xdebug26'
+    php_xdebug_package: 'php72-pecl-xdebug-2.6.1'
 
 - name: PKGNG | Install packages
   pkgng:
