@@ -3,28 +3,26 @@ Ansible PHP (+FPM) role for Debian / Ubuntu / FreeBSD
 
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/HanXHX/php) [![Build Status](https://travis-ci.org/HanXHX/ansible-php.svg?branch=master)](https://travis-ci.org/HanXHX/ansible-php)
 
-Install PHP (php-fpm optional) on Debian / Ubuntu. Manage APCu, Opcache, Xdebug.
+Install PHP on Debian / Ubuntu / FreeBSD. Manage PHP-FPM, APCu, Opcache and Xdebug.
 
 Managed OS / Versions
 ---------------------
 
-|         OS            |   PHP 7.0    |    PHP 7.1    |    PHP 7.2   |    PHP 7.3   |
-|:---------------------:|:------------:|:-------------:|:------------:|:------------:|
-| Debian Stretch (9)    | Yes          | Yes (Sury)    | Yes (Sury)   | Yes (Sury)   |
-| Ubuntu Xenial (16.04) | Yes          | No            | No           | No           |
-| Ubuntu Bionic (18.04) | No           | No            | Yes          | No           |
-| FreeBSD 11            | Yes          | Yes           | Yes          | Yes          |
-| FreeBSD 12            | Yes          | Yes           | Yes          | Yes          |
+|         OS            |       PHP 7.0       |          PHP 7.1           |          PHP 7.2           |           PHP 7.3         |
+|:---------------------:|:-------------------:|:--------------------------:|:--------------------------:|:-------------------------:|
+| Debian Stretch (9)    | :heavy_check_mark:  | :heavy_check_mark: (Sury)  | :heavy_check_mark: (Sury)  | :heavy_check_mark: (Sury) |
+| Ubuntu Xenial (16.04) | :heavy_check_mark:  | :x:                        | :x:                        | :x:                       |
+| Ubuntu Bionic (18.04) | :x:                 | :x:                        | :heavy_check_mark:         | :x:                       |
+| FreeBSD 11            | :heavy_check_mark:  | :heavy_check_mark:         | :heavy_check_mark:         | :heavy_check_mark:        |
+| FreeBSD 12            | :heavy_check_mark:  | :heavy_check_mark:         | :heavy_check_mark:         | :heavy_check_mark:        |
 
 Links:
-- [Dotdeb](https://www.dotdeb.org)
 - [Sury](https://deb.sury.org/)
 
 Requirements
 ------------
 
 If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
-
 
 FreeBSD limitations
 -------------------
@@ -40,7 +38,7 @@ You should look at [default vars](defaults/main.yml).
 
 ### Writable vars
 
-- `php_version`: 7.0, 7.1, 7.2
+- `php_version`: 7.0, 7.1, 7.2, 7.3
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
 - `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
