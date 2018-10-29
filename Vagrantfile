@@ -37,6 +37,7 @@ Vagrant.configure("2") do |config|
         d.remains_running = true
         d.has_ssh = true
       end
+      m.vm.provision "shell", inline: "apt-get update && apt-get install -y python python-apt"
       m.vm.provision "ansible" do |ansible|
         ansible.playbook = "tests/test.yml"
         ansible.verbose = 'vv'
