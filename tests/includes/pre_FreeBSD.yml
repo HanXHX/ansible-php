@@ -7,7 +7,4 @@
 
 - name: PKGNG | Install packages
   pkgng:
-    name: "{{ item }}"
-  with_items:
-    - curl
-    - nginx
+    name: ['curl', 'nginx']

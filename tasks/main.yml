@@ -16,18 +16,14 @@
     state: present
     update_cache: yes
     cache_valid_time: 3600
-  with_flattened:
-    - "{{ php_packages }}"
-    - "{{ php_extra_packages }}"
+  loop: "{{ php_packages + php_extra_packages | flatten }}"
   notify: restart php-fpm
   when: ansible_os_family == 'Debian'
 
 - name: PKGNG | Install PHP packages
   pkgng:
     name: "{{ item }}"
-  with_flattened:
-    - "{{ php_packages }}"
-    - "{{ php_extra_packages }}"
+  loop: "{{ php_packages + php_extra_packages | flatten }}"
   notify: restart php-fpm
   when: ansible_os_family == 'FreeBSD'
 
@@ -39,10 +35,34 @@
     dest: '{{ php_cli_ini }}'
     regexp: '^;?{{ item.key }}'
     line: '{{ item.key }} = {{ item.value }}'
-  with_dict: "{{ php_ini | combine(php_ini_cli) }}"
+  loop: "{{ php_ini | combine(php_ini_cli) | dict2items }}"
 
 - name: INCLUDE | Xdebug
   include: xdebug.yml
 
 - name: APT | Install and configure opcache
   include: opcache.yml
+
+- name: SERVICE | Ensure PHP-FPM is started
+  service:
+    name: '{{ php_fpm_service }}'
+    state: started
+  when: php_install_fpm and ansible_virtualization_type != 'docker'
+
+- block:
+
+  - name: COMMAND | Check if PHP-FPM is started (Docker)
+    command: 'service {{ php_fpm_service }} status'
+    args:
+      warn: false
+    register: dps
+    changed_when: false
+    failed_when: false
+
+  - name: COMMAND | Ensure PHP-FPM is started (Docker)
+    command: 'service {{ php_fpm_service }} start'
+    args:
+      warn: false
+    when: dps.stdout.find('is not running') != -1
+
+  when: php_install_fpm and ansible_virtualization_type == 'docker'

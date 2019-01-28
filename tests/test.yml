@@ -48,12 +48,44 @@
         dest: "{{ __nginx_conf | dirname }}/fastcgi.conf"
       notify: reload nginx
 
+    - name: SERVICE | Ensure nginx is started
+      service:
+        name: nginx
+        state: started
+      when: ansible_virtualization_type != 'docker'
+
+    - block:
+
+      - name: COMMAND | Docker nginx status
+        command: service nginx status
+        args:
+          warn: false
+        changed_when: false
+        failed_when: false
+        register: ngs
+
+      - name: COMMAND | Docker start nginx
+        command: service nginx start
+        args:
+          warn: false
+        when: ngs.stdout.find('nginx is not running') != -1
+
+      when: ansible_virtualization_type == 'docker'
+
   handlers:
 
     - name: reload nginx
       service:
         name: nginx
         state: reloaded
+      notify: docker reload nginx
+
+    - name: docker reload nginx
+      command: service nginx reload
+      args:
+        warn: false
+      notify: docker reload nginx
+      when: ansible_virtualization_type == 'docker'
 
   roles:
     - ../../
