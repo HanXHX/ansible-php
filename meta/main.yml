@@ -4,7 +4,7 @@ galaxy_info:
   description: Install and configure PHP 7.0/7.1/7.2/7.3
   company:
   license: GPLv2
-  min_ansible_version: 2.5
+  min_ansible_version: 2.6
   platforms:
   - name: Debian
     versions:
