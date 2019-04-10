@@ -10,6 +10,7 @@ Vagrant.configure("2") do |config|
     { :name => "debian-stretch-php71", :box => "debian/stretch64", :vars => { "php_version": '7.1' }},
     { :name => "debian-stretch-php72", :box => "debian/stretch64", :vars => { "php_version": '7.2' }},
     { :name => "debian-stretch-php73", :box => "debian/stretch64", :vars => { "php_version": '7.3' }},
+    { :name => "debian-buster-php73",  :box => "debian/buster64",  :vars => { }},
     { :name => "ubuntu-xenial-php70",  :box => "ubuntu/xenial64",  :vars => { }},
     { :name => "ubuntu-bionic-php72",  :box => "ubuntu/bionic64",  :vars => { }},
   ]
@@ -24,6 +25,7 @@ Vagrant.configure("2") do |config|
     { :name => "docker-debian-stretch-php71", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.1' }},
     { :name => "docker-debian-stretch-php72", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.2' }},
     { :name => "docker-debian-stretch-php73", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.3' }},
+    { :name => "docker-debian-buster-php73",  :docker => "hanxhx/vagrant-ansible:debian10",    :vars => { }},
     { :name => "docker-ubuntu-xenial-php70",  :docker => "hanxhx/vagrant-ansible:ubuntu16.04", :vars => { }},
     { :name => "docker-ubuntu-bionic-php72",  :docker => "hanxhx/vagrant-ansible:ubuntu18.04", :vars => { }},
   ]
