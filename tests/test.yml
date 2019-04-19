@@ -24,8 +24,8 @@
 
   pre_tasks:
 
-    - name: INCLUDE | Pre tasks related to OS
-      include: "includes/pre_{{ ansible_os_family }}.yml"
+    - name: INCLUDE_TASKS | Pre tasks related to OS
+      include_tasks: "includes/pre_{{ ansible_os_family }}.yml"
 
   tasks:
 

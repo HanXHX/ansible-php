@@ -27,8 +27,8 @@
   notify: restart php-fpm
   when: ansible_os_family == 'FreeBSD'
 
-- name: INCLUDE | PHP-FPM
-  include: fpm.yml
+- name: IMPORT_TASKS | PHP-FPM
+  import_tasks: fpm.yml
 
 - name: LINEINFILE | PHP CLI configuration
   lineinfile:
@@ -37,11 +37,11 @@
     line: '{{ item.key }} = {{ item.value }}'
   loop: "{{ php_ini | combine(php_ini_cli) | dict2items }}"
 
-- name: INCLUDE | Xdebug
-  include: xdebug.yml
+- name: IMPORT_TASKS | Xdebug
+  import_tasks: xdebug.yml
 
 - name: APT | Install and configure opcache
-  include: opcache.yml
+  import_tasks: opcache.yml
 
 - name: SERVICE | Ensure PHP-FPM is started
   service:
