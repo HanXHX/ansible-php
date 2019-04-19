@@ -19,6 +19,6 @@
 
 - name: INCLUDE_TASKS | Sury
   include_tasks: Debian/sury.yml
-  when: >
-    ansible_distribution_major_version is version('9', 'eq') and
-    php_version is version('7.1', 'ge')
+  when:
+    (ansible_distribution_major_version is version('9', 'eq')) and
+    (php_version is version('7.1', 'ge'))

@@ -4,6 +4,6 @@
   apt_key:
     url: 'https://packages.sury.org/php/apt.gpg'
 
-- name: APT | Add Sury repository
+- name: APT_REPOSITORY | Add Sury repository
   apt_repository:
     repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'
