@@ -27,3 +27,10 @@
     dest: '{{ php_fpm_pool_dir }}/{{ item.pool_name }}.conf'
   loop: "{{ php_fpm_poold }}"
   notify: restart php-fpm
+
+- name: FILE | Delete default pool if necessary
+  file:
+    path: "{{ php_fpm_pool_dir }}/www.conf"
+    state: absent
+  when: '"www" not in (php_fpm_poold | map(attribute="pool_name") | list)'
+  notify: restart php-fpm

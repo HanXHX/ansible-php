@@ -11,7 +11,7 @@
     php_ini_cli:
       error_reporting: 'E_ALL'
     php_fpm_poold:
-      - pool_name: 'www'
+      - pool_name: 'test_ansible'
         listen: '{{ php_default_fpm_sock }}'
         pm: 'dynamic'
         pm_max_children: 250
