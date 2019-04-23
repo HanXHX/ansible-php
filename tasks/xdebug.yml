@@ -33,9 +33,10 @@
       state: absent
     when: ansible_os_family == 'Debian'
 
-  - name: PKGNG | Install xdebug
+  - name: PKGNG | Uninstall xdebug
     pkgng:
       name: "{{ php_xdebug_package }}"
-    when: ansible_os_family == 'FreeBSD' and php_xdebug_package is defined
+      state: absent
+    when: ansible_os_family == 'FreeBSD'
 
   when: not php_install_xdebug
