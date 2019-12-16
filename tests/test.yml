@@ -21,6 +21,10 @@
         status_path: '/status'
         ping_path: '/ping'
         ping_response: 'ok'
+        php_flag:
+          display_errors: 'Off'
+        php_admin_flag:
+          memory_limit: '128M'
 
   pre_tasks:
 
