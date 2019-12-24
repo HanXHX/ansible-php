@@ -15,6 +15,45 @@
     - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
 
+- name: SET_FACT | Transform data
+  set_fact:
+    __php_fpm_full_pool: |
+      [
+      {% for p in php_fpm_poold %}
+        {
+          name: "{{ p.name | default(p.pool_name) }}",
+          listen: "{{ item.listen | default(php_version | php_socket(p.name | default(p.pool_name))) }}",
+          user: "{{ item.user | default(php_default_user_group) }}",
+          group: "{{ item.group | default(php_default_user_group) }}",
+          listen_owner: "{{ item.listen_owner | default(php_default_user_group) }}",
+          listen_group: "{{ item.listen_owner | default(php_default_user_group) }}",
+          {% for k, v in p.items() %}
+          {% if k not in ['name', 'pool_name', 'listen', 'user', 'group', 'listen_owner'] %}
+          {{ k }}: "{{ v }}"{% if not loop.last %},{% endif %}
+          {% endif %}
+          {% endfor %}
+        }{% if not loop.last %},{% endif %}
+      {% endfor %}
+      ]
+
+- name: SET_FACT | To YAML
+  set_fact:
+    php_fpm_full_pool: "{{ __php_fpm_full_pool | from_yaml }}"
+
+- name: FILE | Creates ansible facts.d
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+    recurse: yes
+
+- name: COPY | Manage current repositories
+  copy:
+    content: "{ \"php_fpm_full_pool\": {{ php_fpm_full_pool | to_json }} }"
+    dest: /etc/ansible/facts.d/php_fpm_pool.fact
+
+- debug: var=php_fpm_full_pool
+- fail: msg='ok'
+
 - name: APT | Install PHP packages
   apt:
     pkg: "{{ item }}"
