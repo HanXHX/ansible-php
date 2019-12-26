@@ -4,7 +4,7 @@
   vars:
     vhost: 'test.local'
     php_extra_packages:
-      - '{{ php_package_prefix }}recode'
+      - '{{ php_package_prefix }}pgsql'
     php_install_xdebug: true
     php_ini_fpm:
       display_errors: 'Off'
