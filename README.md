@@ -29,7 +29,7 @@ FreeBSD limitations
 -------------------
 
 - It doesn't split ini file for FPM/CLI. It's hardcoded as `/usr/local/etc/php.ini`.
-- It can't manage multiple PHP versions at the time (like old Debian versions)
+- It can't manage multiple PHP versions at the time (like legacy Debian versions)
 - You must explicitely set xdebug package name (use `pkg search xdebug` to find the good one)
 
 Role Variables
@@ -39,7 +39,7 @@ You should look at [default vars](defaults/main.yml).
 
 ### Writable vars
 
-- `php_version`: 7.0, 7.1, 7.2, 7.3
+- `php_version`: 7.3, 7.4... depending OS (see above)
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
 - `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
@@ -55,7 +55,6 @@ Note:
 - If you want exactly same configuration for CLI/FPM. You can put all your data in `php_ini`.
 - Put specific configuration in `php_ini_fpm`/`php_ini_cli`.
 - You can override with `php_ini_fpm`/`php_ini_cli`, but it breaks idempotence.
-
 
 #### OpCache settings
 
