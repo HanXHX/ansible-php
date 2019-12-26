@@ -24,13 +24,13 @@
 - name: TEMPLATE | Deploy pool configuration
   template:
     src: etc/__php__/fpm/pool.d/pool.conf.j2
-    dest: '{{ php_fpm_pool_dir }}/{{ item.pool_name }}.conf'
-  loop: "{{ php_fpm_poold }}"
+    dest: '{{ php_fpm_pool_dir }}/{{ item.name }}.conf'
+  loop: "{{ ansible_local.hanxhx_php.fpm_pool }}"
   notify: restart php-fpm
 
 - name: FILE | Delete default pool if necessary
   file:
     path: "{{ php_fpm_pool_dir }}/www.conf"
     state: absent
-  when: '"www" not in (php_fpm_poold | map(attribute="pool_name") | list)'
+  when: '"www" not in (ansible_local.hanxhx_php.fpm_pool | map(attribute="name") | list)'
   notify: restart php-fpm

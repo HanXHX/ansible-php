@@ -8,14 +8,14 @@ Install PHP on Debian / Ubuntu / FreeBSD. Manage PHP-FPM, APCu, Opcache and Xdeb
 Managed OS / Versions
 ---------------------
 
-|         OS            |       PHP 7.0       |          PHP 7.1           |          PHP 7.2           |           PHP 7.3         |
-|:---------------------:|:-------------------:|:--------------------------:|:--------------------------:|:-------------------------:|
-| Debian Stretch (9)    | :heavy_check_mark:  | :heavy_check_mark: (Sury)  | :heavy_check_mark: (Sury)  | :heavy_check_mark: (Sury) |
-| Debian Buster (10)    | :x:                 | :x:                        | :x:                        | :heavy_check_mark:        |
-| Ubuntu Xenial (16.04) | :heavy_check_mark:  | :x:                        | :x:                        | :x:                       |
-| Ubuntu Bionic (18.04) | :x:                 | :x:                        | :heavy_check_mark:         | :x:                       |
-| FreeBSD 11            | :heavy_check_mark:  | :heavy_check_mark:         | :heavy_check_mark:         | :heavy_check_mark:        |
-| FreeBSD 12            | :heavy_check_mark:  | :heavy_check_mark:         | :heavy_check_mark:         | :heavy_check_mark:        |
+|         OS            |       PHP 7.0       |          PHP 7.1           |          PHP 7.2           |           PHP 7.3         |           PHP 7.4         |
+|:---------------------:|:-------------------:|:--------------------------:|:--------------------------:|:-------------------------:|:--------------------------:
+| Debian Stretch (9)    | :heavy_check_mark:  | :heavy_check_mark: (Sury)  | :heavy_check_mark: (Sury)  | :heavy_check_mark: (Sury) | :heavy_check_mark: (Sury) |
+| Debian Buster (10)    | :x:                 | :x:                        | :x:                        | :heavy_check_mark:        | :heavy_check_mark: (Sury) |
+| Ubuntu Xenial (16.04) | :heavy_check_mark:  | :x:                        | :x:                        | :x:                       | :x:                       |
+| Ubuntu Bionic (18.04) | :x:                 | :x:                        | :heavy_check_mark:         | :x:                       | :x:                       |
+| FreeBSD 11            | :heavy_check_mark:  | :heavy_check_mark:         | :heavy_check_mark:         | :heavy_check_mark:        | Need tests...             |
+| FreeBSD 12            | :heavy_check_mark:  | :heavy_check_mark:         | :heavy_check_mark:         | :heavy_check_mark:        | Need tests...             |
 
 Links:
 - [Sury](https://deb.sury.org/)

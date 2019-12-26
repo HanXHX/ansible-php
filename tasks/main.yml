@@ -1,10 +1,5 @@
 ---
 
-- name: SET_FACT | Bypass https://github.com/ansible/ansible/issues/19874
-  set_fact:
-    ansible_distribution_release: 'buster'
-  when: ansible_facts.distribution_major_version == "buster/sid"
-
 - name: INCLUDE_VARS | Related to OS family
   include_vars: "OS_Family_{{ ansible_os_family }}.yml"
 
@@ -15,20 +10,63 @@
     - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
 
+- name: SET_FACT | Transform data
+  set_fact:
+    __php_fpm_full_pool: |
+      [
+      {% for p in php_fpm_poold %}
+        {
+          name: "{{ p.name | default(p.pool_name) }}",
+          listen: "{{ p.listen | default(php_version | php_socket(p.name | default(p.pool_name))) }}",
+          user: "{{ p.user | default(php_default_user_group) }}",
+          group: "{% if p.user is defined %}{{ p.group | default(p.user) }}{% else %}{{ p.group | default(php_default_user_group) }}{% endif %}",
+          php_value: {% if p.php_value is defined %}{{ p.php_value | to_nice_json }}{% else %}{}{% endif %},
+          php_admin_value: {% if p.php_admin_value is defined %}{{ p.php_admin_value | to_nice_json }}{% else %}{}{% endif %},
+          {% for k, v in p.items() | list %}
+          {% if k not in ['name', 'pool_name', 'listen', 'user', 'group', 'php_value', 'php_admin_value'] %}
+          {{ k }}: "{{ v }}"{% if not loop.last %},{% endif %}
+          {% endif %}
+          {% endfor %}
+        }{% if not loop.last %},{% endif %}
+      {% endfor %}
+      ]
+
+- name: SET_FACT | To YAML
+  set_fact:
+    php_fpm_full_pool: "{{ __php_fpm_full_pool | from_yaml }}"
+
+- name: FILE | Creates ansible facts.d
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+    recurse: yes
+
+- name: COPY | Manage facts
+  copy:
+    content: "{ \"fpm_pool\": {{ php_fpm_full_pool | to_nice_json }} }"
+    dest: /etc/ansible/facts.d/hanxhx_php.fact
+  register: f
+
+- name: SETUP | Gathers new facts
+  setup:
+  when: f.changed
+  tags:
+    - skip_ansible_lint
+
 - name: APT | Install PHP packages
   apt:
-    pkg: "{{ item }}"
+    pkg: "{{ pkgs }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
-  loop: "{{ php_packages + php_extra_packages | flatten }}"
+  vars:
+    pkgs: "{{ php_packages + php_extra_packages | flatten }}"
   notify: restart php-fpm
   when: ansible_os_family == 'Debian'
 
 - name: PKGNG | Install PHP packages
   pkgng:
-    name: "{{ item }}"
-  loop: "{{ php_packages + php_extra_packages | flatten }}"
+    name: "{{ php_packages + php_extra_packages | flatten | join(',') }}"
   notify: restart php-fpm
   when: ansible_os_family == 'FreeBSD'
 

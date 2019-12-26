@@ -90,10 +90,10 @@ php_xdebug_var_display_max_depth: '3'
 
 # PHP-FPM
 php_fpm_poold:
-  - pool_name: 'www'
+  - name: 'www'
     listen: '{{ php_default_fpm_sock }}'
     pm: 'dynamic'
-    pm_max_children: 250
+    pm_max_children: 100
     pm_start_servers: 10
     pm_min_spare_servers: 10
     pm_max_spare_servers: 20
