@@ -6,6 +6,7 @@
     php_extra_packages:
       - '{{ php_package_prefix }}pgsql'
     php_install_xdebug: true
+    php_autoremove_default_pool: true
     php_ini_fpm:
       display_errors: 'Off'
     php_ini_cli:

@@ -32,5 +32,5 @@
   file:
     path: "{{ php_fpm_pool_dir }}/www.conf"
     state: absent
-  when: '"www" not in (ansible_local.hanxhx_php.fpm_pool | map(attribute="name") | list)'
+  when: '"www" not in (ansible_local.hanxhx_php.fpm_pool | map(attribute="name") | list) and php_autoremove_default_pool'
   notify: restart php-fpm
