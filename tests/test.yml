@@ -12,7 +12,7 @@
       error_reporting: 'E_ALL'
     php_fpm_poold:
       - pool_name: 'test_ansible'
-        listen: '{{ php_default_fpm_sock }}'
+        listen: '/run/php/php-ansible1.sock'
         pm: 'dynamic'
         pm_max_children: 250
         pm_start_servers: 10
@@ -21,25 +21,24 @@
         status_path: '/status'
         ping_path: '/ping'
         ping_response: 'ok'
-        php_flag:
+      - name: 'test_ansible2'
+        user: 'foo'
+        php_value:
           display_errors: 'Off'
-        php_admin_flag:
-          memory_limit: '128M'
-      - pool_name: 'test_ansible2'
-        pm: 'dynamic'
-        pm_max_children: 250
-        pm_start_servers: 10
-        pm_min_spare_servers: 10
-        pm_max_spare_servers: 20
-        php_flag:
-          display_errors: 'On'
-        php_admin_flag:
-          memory_limit: '64M'
+        php_admin_value:
+          memory_limit: '98M'
 
   pre_tasks:
 
     - name: INCLUDE_TASKS | Pre tasks related to OS
       include_tasks: "includes/pre_{{ ansible_os_family }}.yml"
+
+    - name: USER | Create PHP user
+      user:
+        name: 'foo'
+        system: yes
+        create_home: no
+        shell: '/usr/sbin/nologin'
 
   tasks:
 
@@ -122,6 +121,11 @@
         dest: /var/www/phpinfo.php
         content: '<?php phpinfo();'
 
+    - name: COPY | Add ini test file
+      copy:
+        dest: /var/www/ini.php
+        content: '<?php echo ini_get("memory_limit") . "\n";'
+
     - name: SHELL | Check vhost
       shell: "curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version {{ php_version }}' | sed -r 's/<//g'"
       args:
@@ -129,6 +133,14 @@
       changed_when: false
       register: c
       failed_when: c.stdout == ''
+
+    - name: SHELL | Check custom php value
+      shell: "curl -H 'Host: {{ vhost }}' http://127.0.0.1/ini.php 2> /dev/null"
+      args:
+        warn: false
+      changed_when: false
+      register: c
+      failed_when: 'php_fpm_poold.1.php_admin_value.memory_limit not in c.stdout'
 
     - name: URI | Check ping
       uri:

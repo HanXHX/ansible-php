@@ -15,22 +15,27 @@ http {
 
 		root /var/www;
 
-{% if php_fpm_poold.0.status_path is defined %}
-		location = {{ php_fpm_poold.0.status_path }} {
+{% if ansible_local.hanxhx_php.fpm_pool.0.status_path is defined %}
+		location = {{ ansible_local.hanxhx_php.fpm_pool.0.status_path }} {
 			include fastcgi.conf;
-			fastcgi_pass unix:{{ php_default_fpm_sock }};
+			fastcgi_pass unix:{{ ansible_local.hanxhx_php.fpm_pool.0.listen }};
 		}
 {% endif %}
-{% if php_fpm_poold.0.ping_path is defined %}
-		location = {{ php_fpm_poold.0.ping_path }} {
+{% if ansible_local.hanxhx_php.fpm_pool.0.ping_path is defined %}
+		location = {{ ansible_local.hanxhx_php.fpm_pool.0.ping_path }} {
 			include fastcgi.conf;
-			fastcgi_pass unix:{{ php_default_fpm_sock }};
+			fastcgi_pass unix:{{ ansible_local.hanxhx_php.fpm_pool.0.listen }};
 		}
 {% endif %}
 
+		location = /ini.php {
+			include fastcgi.conf;
+			fastcgi_pass unix:{{ ansible_local.hanxhx_php.fpm_pool.1.listen }};
+		}
+
 		location ~ \.php$ {
 			include fastcgi.conf;
-			fastcgi_pass unix:{{ php_default_fpm_sock }};
+			fastcgi_pass unix:{{ ansible_local.hanxhx_php.fpm_pool.0.listen }};
 		}
 	}
 }

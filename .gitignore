@@ -2,3 +2,4 @@
 *.swp
 *.retry
 *.log
+/filter_plugins/*.pyc
