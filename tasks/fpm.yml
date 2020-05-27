@@ -14,7 +14,7 @@
 
 - name: LINEINFILE | PHP configuration
   lineinfile:
-    dest: '{{ php_cli_ini }}'
+    dest: '{{ php_fpm_ini }}'
     regexp: '^;?{{ item.key }}'
     line: '{{ item.key }} = {{ item.value }}'
     create: yes
