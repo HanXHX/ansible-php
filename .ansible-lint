@@ -1,8 +1,8 @@
 ---
 
 # TODO: enable later
-# enable_list:
-#   - fqcn-builtins
+enable_list:
+  - fqcn-builtins
 
 skip_list:
   - role-name

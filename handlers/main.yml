@@ -1,14 +1,14 @@
 ---
 
 - name: restart php-fpm
-  service:
+  ansible.builtin.service:
     name: '{{ php_fpm_service }}'
     state: restarted
   when: php_install_fpm
   notify: docker restart php-fpm
 
 - name: docker restart php-fpm
-  command: 'service {{ php_fpm_service }} restart'
+  ansible.builtin.command: 'service {{ php_fpm_service }} restart'
   args:
     warn: false
   when: ansible_virtualization_type == 'docker'
