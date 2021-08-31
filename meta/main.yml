@@ -1,15 +1,16 @@
 ---
 galaxy_info:
   author: Emilien Mantel
-  description: Install and configure PHP 7.0/7.1/7.2/7.3
+  description: Install and configure PHP 7.0/7.1/7.2/7.3/7.4/8.0
   company:
   license: GPLv2
-  min_ansible_version: 2.6
+  min_ansible_version: 2.11
   platforms:
   - name: Debian
     versions:
     - stretch
     - buster
+    - bullseye
   - name: Ubuntu
     versions:
     - xenial
