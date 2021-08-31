@@ -2,25 +2,25 @@
 
 - block:
 
-  - name: APT | Install APCu
-    apt:
-      pkg: "php-apcu"
+    - name: APT | Install APCu
+      apt:
+        pkg: "php-apcu"
 
-  - name: APT | Install Opcache
-    apt:
-      pkg: "{{ php_package_prefix }}opcache"
+    - name: APT | Install Opcache
+      apt:
+        pkg: "{{ php_package_prefix }}opcache"
 
   when: ansible_os_family == 'Debian'
 
 - block:
 
-  - name: PKGNG | Install APCu
-    pkgng:
-      name: "php{{ php_version | replace('.', '') }}-pecl-APCu"
+    - name: PKGNG | Install APCu
+      pkgng:
+        name: "php{{ php_version | replace('.', '') }}-pecl-APCu"
 
-  - name: PKGNG | Install Opcache
-    pkgng:
-      name: "{{ php_package_prefix }}opcache"
+    - name: PKGNG | Install Opcache
+      pkgng:
+        name: "{{ php_package_prefix }}opcache"
 
   when: ansible_os_family == 'FreeBSD'
 
@@ -28,10 +28,16 @@
   template:
     src: "etc/__php__/mods-available/opcache.ini.j2"
     dest: "{{ php_mods_dir }}/opcache.ini"
+    owner: root
+    group: root
+    mode: 0644
   notify: restart php-fpm
 
 - name: TEMPLATE | Configure APCu
   template:
     src: "etc/__php__/mods-available/apcu.ini.j2"
     dest: "{{ php_mods_dir }}/apcu.ini"
+    owner: root
+    group: root
+    mode: 0644
   notify: restart php-fpm

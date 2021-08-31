@@ -17,7 +17,10 @@
     dest: '{{ php_fpm_ini }}'
     regexp: '^;?{{ item.key }}'
     line: '{{ item.key }} = {{ item.value }}'
-    create: yes
+    create: true
+    owner: root
+    group: root
+    mode: 0644
   loop: "{{ php_ini | combine(php_ini_fpm) | dict2items }}"
   notify: restart php-fpm
 
@@ -25,6 +28,9 @@
   template:
     src: etc/__php__/fpm/pool.d/pool.conf.j2
     dest: '{{ php_fpm_pool_dir }}/{{ item.name }}.conf'
+    owner: root
+    group: root
+    mode: 0644
   loop: "{{ ansible_local.hanxhx_php.fpm_pool }}"
   notify: restart php-fpm
 
