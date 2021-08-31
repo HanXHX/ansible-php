@@ -37,8 +37,8 @@
     - name: USER | Create PHP user
       user:
         name: 'foo'
-        system: yes
-        create_home: no
+        system: true
+        create_home: false
         shell: '/usr/sbin/nologin'
 
   tasks:
@@ -70,19 +70,19 @@
 
     - block:
 
-      - name: COMMAND | Docker nginx status
-        command: service nginx status
-        args:
-          warn: false
-        changed_when: false
-        failed_when: false
-        register: ngs
+        - name: COMMAND | Docker nginx status
+          command: service nginx status
+          args:
+            warn: false
+          changed_when: false
+          failed_when: false
+          register: ngs
 
-      - name: COMMAND | Docker start nginx
-        command: service nginx start
-        args:
-          warn: false
-        when: ngs.stdout.find('nginx is not running') != -1
+        - name: COMMAND | Docker start nginx
+          command: service nginx start
+          args:
+            warn: false
+          when: ngs.stdout.find('nginx is not running') != -1
 
       when: ansible_virtualization_type == 'docker'
 
