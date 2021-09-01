@@ -13,7 +13,6 @@ galaxy_info:
         - bullseye
     - name: Ubuntu
       versions:
-        - xenial
         - bionic
     - name: FreeBSD
       versions:

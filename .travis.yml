@@ -10,7 +10,6 @@ env:
     - PLATFORM='docker-debian-bullseye-php74' ANSIBLE_VERSION='>=2.11,<2.12'
     - PLATFORM='docker-debian-bullseye-php80' ANSIBLE_VERSION='>=2.11,<2.12'
     - PLATFORM='docker-debian-buster-php74'   ANSIBLE_VERSION='>=2.11,<2.12'
-    - PLATFORM='docker-ubuntu-xenial-php70'   ANSIBLE_VERSION='>=2.11,<2.12'
     - PLATFORM='docker-ubuntu-bionic-php72'   ANSIBLE_VERSION='>=2.11,<2.12'
 
 os:

@@ -12,7 +12,6 @@ Vagrant.configure("2") do |config|
     { :name => "debian-buster-php74",   :box => "debian/buster64",   :vars => { "php_version": '7.4' }},
     { :name => "debian-bullseye-php74", :box => "debian/bullseye64", :vars => { }},
     { :name => "debian-bullseye-php80", :box => "debian/bullseye64", :vars => { "php_version": '8.0' }},
-    { :name => "ubuntu-xenial-php70",   :box => "ubuntu/xenial64",   :vars => { }},
     { :name => "ubuntu-bionic-php72",   :box => "ubuntu/bionic64",   :vars => { }},
   ]
 
@@ -28,7 +27,6 @@ Vagrant.configure("2") do |config|
     { :name => "docker-debian-buster-php74",   :docker => "hanxhx/vagrant-ansible:debian10",    :vars => { "php_version": '7.4' }},
     { :name => "docker-debian-bullseye-php74", :docker => "hanxhx/vagrant-ansible:debian11",    :vars => { }},
     { :name => "docker-debian-bullseye-php80", :docker => "hanxhx/vagrant-ansible:debian11",    :vars => { "php_version": '8.0' }},
-    { :name => "docker-ubuntu-xenial-php70",   :docker => "hanxhx/vagrant-ansible:ubuntu16.04", :vars => { }},
     { :name => "docker-ubuntu-bionic-php72",   :docker => "hanxhx/vagrant-ansible:ubuntu18.04", :vars => { }},
   ]
 
