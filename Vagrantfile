@@ -6,15 +6,13 @@
 Vagrant.configure("2") do |config|
 
   vms_debian = [
-    { :name => "debian-stretch-php70", :box => "debian/stretch64", :vars => { }},
-    { :name => "debian-stretch-php71", :box => "debian/stretch64", :vars => { "php_version": '7.1' }},
-    { :name => "debian-stretch-php72", :box => "debian/stretch64", :vars => { "php_version": '7.2' }},
-    { :name => "debian-stretch-php73", :box => "debian/stretch64", :vars => { "php_version": '7.3' }},
-    { :name => "debian-stretch-php74", :box => "debian/stretch64", :vars => { "php_version": '7.4' }},
-    { :name => "debian-buster-php73",  :box => "debian/buster64",  :vars => { }},
-    { :name => "debian-buster-php74",  :box => "debian/buster64",  :vars => { "php_version": '7.4' }},
-    { :name => "ubuntu-xenial-php70",  :box => "ubuntu/xenial64",  :vars => { }},
-    { :name => "ubuntu-bionic-php72",  :box => "ubuntu/bionic64",  :vars => { }},
+    { :name => "debian-stretch-php70",  :box => "debian/stretch64",  :vars => { }},
+    { :name => "debian-stretch-php74",  :box => "debian/stretch64",  :vars => { "php_version": '7.4' }},
+    { :name => "debian-buster-php73",   :box => "debian/buster64",   :vars => { }},
+    { :name => "debian-buster-php74",   :box => "debian/buster64",   :vars => { "php_version": '7.4' }},
+    { :name => "debian-bullseye-php74", :box => "debian/bullseye64", :vars => { }},
+    { :name => "debian-bullseye-php80", :box => "debian/bullseye64", :vars => { "php_version": '8.0' }},
+    { :name => "ubuntu-bionic-php72",   :box => "ubuntu/bionic64",   :vars => { }},
   ]
 
   vms_freebsd = [
@@ -23,15 +21,13 @@ Vagrant.configure("2") do |config|
   ]
 
   conts = [
-    { :name => "docker-debian-stretch-php70", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { }},
-    { :name => "docker-debian-stretch-php71", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.1' }},
-    { :name => "docker-debian-stretch-php72", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.2' }},
-    { :name => "docker-debian-stretch-php73", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.3' }},
-    { :name => "docker-debian-stretch-php74", :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.4' }},
-    { :name => "docker-debian-buster-php73",  :docker => "hanxhx/vagrant-ansible:debian10",    :vars => { }},
-    { :name => "docker-debian-buster-php74",  :docker => "hanxhx/vagrant-ansible:debian10",    :vars => { "php_version": '7.4' }},
-    { :name => "docker-ubuntu-xenial-php70",  :docker => "hanxhx/vagrant-ansible:ubuntu16.04", :vars => { }},
-    { :name => "docker-ubuntu-bionic-php72",  :docker => "hanxhx/vagrant-ansible:ubuntu18.04", :vars => { }},
+    { :name => "docker-debian-stretch-php70",  :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { }},
+    { :name => "docker-debian-stretch-php74",  :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.4' }},
+    { :name => "docker-debian-buster-php73",   :docker => "hanxhx/vagrant-ansible:debian10",    :vars => { }},
+    { :name => "docker-debian-buster-php74",   :docker => "hanxhx/vagrant-ansible:debian10",    :vars => { "php_version": '7.4' }},
+    { :name => "docker-debian-bullseye-php74", :docker => "hanxhx/vagrant-ansible:debian11",    :vars => { }},
+    { :name => "docker-debian-bullseye-php80", :docker => "hanxhx/vagrant-ansible:debian11",    :vars => { "php_version": '8.0' }},
+    { :name => "docker-ubuntu-bionic-php72",   :docker => "hanxhx/vagrant-ansible:ubuntu18.04", :vars => { }},
   ]
 
   config.vm.network "private_network", type: "dhcp"
@@ -43,7 +39,12 @@ Vagrant.configure("2") do |config|
         d.remains_running = true
         d.has_ssh = true
       end
-      m.vm.provision "shell", inline: "apt-get update && apt-get install -y python python-apt"
+
+      if opts[:name].include? "bullseye"
+        m.vm.provision "shell", inline: "[ -f '/root/first_provision' ] || (apt-get update -qq && apt-get -y dist-upgrade && touch /root/first_provision)"
+      end
+
+      #m.vm.provision "shell", inline: "apt-get update && apt-get install -y python python-apt"
       m.vm.provision "ansible" do |ansible|
         ansible.playbook = "tests/test.yml"
         ansible.verbose = 'vv'
@@ -61,6 +62,11 @@ Vagrant.configure("2") do |config|
         v.memory = 256
       end
       m.vm.provision "shell", inline: "apt-get update && apt-get install -y ifupdown python"
+
+      if opts[:name].include? "bullseye"
+        m.vm.provision "shell", inline: "[ -f '/root/first_provision' ] || (apt-get update -qq && apt-get -y dist-upgrade && touch /root/first_provision)"
+      end
+
       m.vm.provision "ansible" do |ansible|
         ansible.playbook = "tests/test.yml"
         ansible.verbose = 'vv'

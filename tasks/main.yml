@@ -1,17 +1,17 @@
 ---
 
 - name: INCLUDE_VARS | Related to OS family
-  include_vars: "OS_Family_{{ ansible_os_family }}.yml"
+  ansible.builtin.include_vars: "OS_Family_{{ ansible_os_family }}.yml"
 
 - name: INCLUDE_VARS | Related to OS version
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml"
     - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
 
 - name: SET_FACT | Transform data
-  set_fact:
+  ansible.builtin.set_fact:
     __php_fpm_full_pool: |
       [
       {% for p in php_fpm_poold %}
@@ -32,32 +32,37 @@
       ]
 
 - name: SET_FACT | To YAML
-  set_fact:
+  ansible.builtin.set_fact:
     php_fpm_full_pool: "{{ __php_fpm_full_pool | from_yaml }}"
 
 - name: FILE | Creates ansible facts.d
-  file:
+  ansible.builtin.file:
     path: /etc/ansible/facts.d
     state: directory
-    recurse: yes
+    owner: root
+    group: root
+    mode: 0755
 
 - name: COPY | Manage facts
-  copy:
+  ansible.builtin.copy:
     content: "{ \"fpm_pool\": {{ php_fpm_full_pool | to_nice_json }} }"
     dest: /etc/ansible/facts.d/hanxhx_php.fact
+    owner: root
+    group: root
+    mode: 0644
   register: f
 
 - name: SETUP | Gathers new facts
-  setup:
+  ansible.builtin.setup:
   when: f.changed
   tags:
     - skip_ansible_lint
 
 - name: APT | Install PHP packages
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ pkgs }}"
     state: present
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
   vars:
     pkgs: "{{ php_packages + php_extra_packages | flatten }}"
@@ -65,47 +70,47 @@
   when: ansible_os_family == 'Debian'
 
 - name: PKGNG | Install PHP packages
-  pkgng:
+  community.general.pkgng:
     name: "{{ php_packages + php_extra_packages | flatten | join(',') }}"
   notify: restart php-fpm
   when: ansible_os_family == 'FreeBSD'
 
 - name: IMPORT_TASKS | PHP-FPM
-  import_tasks: fpm.yml
+  ansible.builtin.import_tasks: fpm.yml
 
 - name: LINEINFILE | PHP CLI configuration
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ php_cli_ini }}'
     regexp: '^;?{{ item.key }}'
     line: '{{ item.key }} = {{ item.value }}'
   loop: "{{ php_ini | combine(php_ini_cli) | dict2items }}"
 
 - name: IMPORT_TASKS | Xdebug
-  import_tasks: xdebug.yml
+  ansible.builtin.import_tasks: xdebug.yml
 
 - name: APT | Install and configure opcache
-  import_tasks: opcache.yml
+  ansible.builtin.import_tasks: opcache.yml
 
 - name: SERVICE | Ensure PHP-FPM is started
-  service:
+  ansible.builtin.service:
     name: '{{ php_fpm_service }}'
     state: started
   when: php_install_fpm and ansible_virtualization_type != 'docker'
 
 - block:
 
-  - name: COMMAND | Check if PHP-FPM is started (Docker)
-    command: 'service {{ php_fpm_service }} status'
-    args:
-      warn: false
-    register: dps
-    changed_when: false
-    failed_when: false
+    - name: COMMAND | Check if PHP-FPM is started (Docker)
+      ansible.builtin.command: 'service {{ php_fpm_service }} status'
+      args:
+        warn: false
+      register: dps
+      changed_when: false
+      failed_when: false
 
-  - name: COMMAND | Ensure PHP-FPM is started (Docker)
-    command: 'service {{ php_fpm_service }} start'
-    args:
-      warn: false
-    when: dps.stdout.find('is not running') != -1
+    - name: COMMAND | Ensure PHP-FPM is started (Docker)
+      ansible.builtin.command: 'service {{ php_fpm_service }} start'
+      args:
+        warn: false
+      when: dps.stdout.find('is not running') != -1
 
   when: php_install_fpm and ansible_virtualization_type == 'docker'

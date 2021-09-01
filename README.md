@@ -1,21 +1,22 @@
 Ansible PHP (+FPM) role for Debian / Ubuntu / FreeBSD
 =====================================================
 
-[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/HanXHX/php) [![Build Status](https://travis-ci.org/HanXHX/ansible-php.svg?branch=master)](https://travis-ci.org/HanXHX/ansible-php)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/HanXHX/php) [![Build Status](https://app.travis-ci.com/HanXHX/ansible-php.svg?branch=master)](https://app.travis-ci.com/HanXHX/ansible-php)
 
 Install PHP on Debian / Ubuntu / FreeBSD. Manage PHP-FPM, APCu, Opcache and Xdebug.
 
 Managed OS / Versions
 ---------------------
 
-|         OS            |       PHP 7.0       |          PHP 7.1           |          PHP 7.2           |           PHP 7.3         |           PHP 7.4         |
-|:---------------------:|:-------------------:|:--------------------------:|:--------------------------:|:-------------------------:|:--------------------------:
-| Debian Stretch (9)    | :heavy_check_mark:  | :heavy_check_mark: (Sury)  | :heavy_check_mark: (Sury)  | :heavy_check_mark: (Sury) | :heavy_check_mark: (Sury) |
-| Debian Buster (10)    | :x:                 | :x:                        | :x:                        | :heavy_check_mark:        | :heavy_check_mark: (Sury) |
-| Ubuntu Xenial (16.04) | :heavy_check_mark:  | :x:                        | :x:                        | :x:                       | :x:                       |
-| Ubuntu Bionic (18.04) | :x:                 | :x:                        | :heavy_check_mark:         | :x:                       | :x:                       |
-| FreeBSD 11            | :heavy_check_mark:  | :heavy_check_mark:         | :heavy_check_mark:         | :heavy_check_mark:        | Need tests...             |
-| FreeBSD 12            | :heavy_check_mark:  | :heavy_check_mark:         | :heavy_check_mark:         | :heavy_check_mark:        | Need tests...             |
+On all Debian versions, you can install all PHP versions (from PHP 5.6 to 8.1 beta) by using [Sury's APT repository](https://deb.sury.org/).
+
+Other cases:
+
+|         OS            |       PHP 7.0       |        PHP 7.1       |      PHP 7.2         |       PHP 7.3        |     PHP >= 7.4      |
+|:---------------------:|:-------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:
+| Ubuntu Bionic (18.04) | :x:                 | :x:                  | :heavy_check_mark:   | :x:                  | :x:                 |
+| FreeBSD 11            | :heavy_check_mark:  | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   | Need tests...       |
+| FreeBSD 12            | :heavy_check_mark:  | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   | Need tests...       |
 
 Links:
 - [Sury](https://deb.sury.org/)
@@ -23,7 +24,9 @@ Links:
 Requirements
 ------------
 
-If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
+- Ansible >= 2.11
+- Collections: [community.general](https://galaxy.ansible.com/community/general)
+- If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
 
 FreeBSD limitations
 -------------------
@@ -160,12 +163,12 @@ Example Playbook
       roles:
          - { role: HanXHX.php }
 
-### Debian Stretch with PHP 7.2 CLI (no FPM)
+### Debian Bullseye with PHP 8.0 CLI (no FPM)
 
     - hosts: servers
       roles:
          - { role: HanXHX.sury }
-         - { role: HanXHX.php, php_version: '7.2', php_install_fpm: false }
+         - { role: HanXHX.php, php_version: '8.0', php_install_fpm: false }
 
 License
 -------
