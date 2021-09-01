@@ -15,11 +15,11 @@
 - block:
 
     - name: PKGNG | Install APCu
-      ansible.builtin.pkgng:
+      community.general.pkgng:
         name: "php{{ php_version | replace('.', '') }}-pecl-APCu"
 
     - name: PKGNG | Install Opcache
-      ansible.builtin.pkgng:
+      community.general.pkgng:
         name: "{{ php_package_prefix }}opcache"
 
   when: ansible_os_family == 'FreeBSD'

@@ -25,7 +25,9 @@ Links:
 Requirements
 ------------
 
-If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
+- Ansible >= 2.11
+- Collections: [community.general](https://galaxy.ansible.com/community/general)
+- If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
 
 FreeBSD limitations
 -------------------
