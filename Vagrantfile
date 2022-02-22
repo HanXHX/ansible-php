@@ -40,10 +40,6 @@ Vagrant.configure("2") do |config|
         d.has_ssh = true
       end
 
-      if opts[:name].include? "bullseye"
-        m.vm.provision "shell", inline: "[ -f '/root/first_provision' ] || (apt-get update -qq && apt-get -y dist-upgrade && touch /root/first_provision)"
-      end
-
       #m.vm.provision "shell", inline: "apt-get update && apt-get install -y python python-apt"
       m.vm.provision "ansible" do |ansible|
         ansible.playbook = "tests/test.yml"
@@ -62,10 +58,6 @@ Vagrant.configure("2") do |config|
         v.memory = 256
       end
       m.vm.provision "shell", inline: "apt-get update && apt-get install -y ifupdown python"
-
-      if opts[:name].include? "bullseye"
-        m.vm.provision "shell", inline: "[ -f '/root/first_provision' ] || (apt-get update -qq && apt-get -y dist-upgrade && touch /root/first_provision)"
-      end
 
       m.vm.provision "ansible" do |ansible|
         ansible.playbook = "tests/test.yml"
