@@ -1,5 +1,14 @@
 ---
 
+- name: SHELL | Check if we are in multiple PHP distribution
+  ansible.builtin.shell: set -o pipefail && apt-cache search php xdebug | grep 'php[[:digit:]].[[:digit:]]'
+  args:
+    executable: /bin/bash
+  failed_when: false
+  changed_when: false
+  register: multiple_php
+  when: ansible_os_family == 'Debian'
+
 - name: INCLUDE_VARS | Related to OS family
   ansible.builtin.include_vars: "OS_Family_{{ ansible_os_family }}.yml"
 
@@ -64,6 +73,7 @@
     state: present
     update_cache: true
     cache_valid_time: 3600
+    install_recommends: false
   vars:
     pkgs: "{{ php_packages + php_extra_packages | flatten }}"
   notify: restart php-fpm

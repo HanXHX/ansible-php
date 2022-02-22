@@ -167,3 +167,21 @@
       ansible.builtin.uri:
         url: "http://localhost{{ php_fpm_poold.0.status_path }}"
       when: php_fpm_poold.0.status_path is defined
+
+    - block:
+
+        - name: SHELL | Check if we installed multiple PHP versions
+          ansible.builtin.shell: set -o pipefail && (dpkg -l | grep 'php[[:digit:]].*common' | wc -l)
+          args:
+            executable: /bin/bash
+          failed_when: false
+          changed_when: false
+          register: check_multiple_php
+
+
+        - name: FAIL | If we have multiple PHP version
+          ansible.builtin.fail:
+            msg: "Multiple PHP versions detected"
+          when: check_multiple_php.stdout != '1'
+
+      when: ansible_os_family == 'Debian'

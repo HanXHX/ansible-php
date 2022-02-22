@@ -7,7 +7,8 @@ php_packages:
   - '{{ php_package_prefix }}mysql'
   - '{{ php_package_prefix }}intl'
 
-php_xdebug_package: 'php-xdebug'
+php_xdebug_package: '{% if multiple_php.rc == 0 %}{{ php_package_prefix }}{% else %}php-{% endif %}xdebug'
+php_apcu_package: '{% if multiple_php.rc == 0 %}{{ php_package_prefix }}{% else %}php-{% endif %}apcu'
 
 php_package_prefix: 'php{{ php_version }}-'
 

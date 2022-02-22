@@ -4,11 +4,13 @@
 
     - name: APT | Install APCu
       ansible.builtin.apt:
-        pkg: "php-apcu"
+        pkg: "{{ php_apcu_package }}"
+        install_recommends: false
 
     - name: APT | Install Opcache
       ansible.builtin.apt:
         pkg: "{{ php_package_prefix }}opcache"
+        install_recommends: false
 
   when: ansible_os_family == 'Debian'
 
