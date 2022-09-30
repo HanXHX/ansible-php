@@ -24,6 +24,8 @@
         ping_response: 'ok'
       - name: 'test_ansible2'
         user: 'foo'
+	php_env:
+	  foo: bar
         php_value:
           display_errors: 'Off'
         php_admin_value:
