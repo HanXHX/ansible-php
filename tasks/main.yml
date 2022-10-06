@@ -29,10 +29,11 @@
           listen: "{{ p.listen | default(php_version | php_socket(p.name | default(p.pool_name))) }}",
           user: "{{ p.user | default(php_default_user_group) }}",
           group: "{% if p.user is defined %}{{ p.group | default(p.user) }}{% else %}{{ p.group | default(php_default_user_group) }}{% endif %}",
+          php_env: {% if p.php_env is defined %}{{ p.php_env | to_nice_json }}{% else %}{}{% endif %},
           php_value: {% if p.php_value is defined %}{{ p.php_value | to_nice_json }}{% else %}{}{% endif %},
           php_admin_value: {% if p.php_admin_value is defined %}{{ p.php_admin_value | to_nice_json }}{% else %}{}{% endif %},
           {% for k, v in p.items() | list %}
-          {% if k not in ['name', 'pool_name', 'listen', 'user', 'group', 'php_value', 'php_admin_value'] %}
+          {% if k not in ['name', 'pool_name', 'listen', 'user', 'group', 'php_env', 'php_value', 'php_admin_value'] %}
           {{ k }}: "{{ v }}"{% if not loop.last %},{% endif %}
           {% endif %}
           {% endfor %}
