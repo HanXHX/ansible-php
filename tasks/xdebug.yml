@@ -1,6 +1,8 @@
 ---
 
-- block:
+- name: BLOCK | Uninstall xdebug
+  when: php_install_xdebug
+  block:
 
     - name: APT | Install xdebug
       ansible.builtin.apt:
@@ -22,11 +24,12 @@
         dest: "{{ php_mods_dir }}/xdebug.ini"
         owner: root
         mode: 0644
-      notify: restart php-fpm
+      notify: Restart php-fpm
 
-  when: php_install_xdebug
 
-- block:
+- name: BLOCK | Uninstall xdebug
+  when: not php_install_xdebug
+  block:
 
     - name: APT | Uninstall xdebug
       ansible.builtin.apt:
@@ -39,5 +42,3 @@
         name: "{{ php_xdebug_package }}"
         state: absent
       when: ansible_os_family == 'FreeBSD'
-
-  when: not php_install_xdebug

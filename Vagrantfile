@@ -6,8 +6,6 @@
 Vagrant.configure("2") do |config|
 
   vms_debian = [
-    { :name => "debian-stretch-php70",  :box => "debian/stretch64",  :vars => { }},
-    { :name => "debian-stretch-php74",  :box => "debian/stretch64",  :vars => { "php_version": '7.4' }},
     { :name => "debian-buster-php73",   :box => "debian/buster64",   :vars => { }},
     { :name => "debian-buster-php74",   :box => "debian/buster64",   :vars => { "php_version": '7.4' }},
     { :name => "debian-bullseye-php74", :box => "debian/bullseye64", :vars => { }},
@@ -21,8 +19,6 @@ Vagrant.configure("2") do |config|
   ]
 
   conts = [
-    { :name => "docker-debian-stretch-php70",  :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { }},
-    { :name => "docker-debian-stretch-php74",  :docker => "hanxhx/vagrant-ansible:debian9",     :vars => { "php_version": '7.4' }},
     { :name => "docker-debian-buster-php73",   :docker => "hanxhx/vagrant-ansible:debian10",    :vars => { }},
     { :name => "docker-debian-buster-php74",   :docker => "hanxhx/vagrant-ansible:debian10",    :vars => { "php_version": '7.4' }},
     { :name => "docker-debian-bullseye-php74", :docker => "hanxhx/vagrant-ansible:debian11",    :vars => { }},
