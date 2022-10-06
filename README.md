@@ -8,7 +8,7 @@ Install PHP on Debian / Ubuntu / FreeBSD. Manage PHP-FPM, APCu, Opcache and Xdeb
 Managed OS / Versions
 ---------------------
 
-On all Debian versions, you can install all PHP versions (from PHP 5.6 to 8.1 beta) by using [Sury's APT repository](https://deb.sury.org/).
+On all Debian versions, you can install all PHP versions by using [Sury's APT repository](https://deb.sury.org/).
 
 Other cases:
 
