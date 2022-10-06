@@ -78,13 +78,13 @@
     install_recommends: false
   vars:
     pkgs: "{{ php_packages + php_extra_packages | flatten }}"
-  notify: restart php-fpm
+  notify: Restart php-fpm
   when: ansible_os_family == 'Debian'
 
 - name: PKGNG | Install PHP packages
   community.general.pkgng:
     name: "{{ php_packages + php_extra_packages | flatten | join(',') }}"
-  notify: restart php-fpm
+  notify: Restart php-fpm
   when: ansible_os_family == 'FreeBSD'
 
 - name: IMPORT_TASKS | PHP-FPM

@@ -96,13 +96,13 @@
       ansible.builtin.service:
         name: nginx
         state: reloaded
-      notify: docker reload nginx
+      notify: Docker reload nginx
 
     - name: Docker reload nginx
       ansible.builtin.command: service nginx reload
       args:
         warn: false
-      notify: docker reload nginx
+      notify: Docker reload nginx
       when: ansible_virtualization_type == 'docker'
 
   roles:

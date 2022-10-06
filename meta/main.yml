@@ -1,4 +1,5 @@
 ---
+
 galaxy_info:
   author: Emilien Mantel
   role_name: php
@@ -31,4 +32,5 @@ galaxy_info:
     - debian
     - ubuntu
     - freebsd
+
 dependencies: []

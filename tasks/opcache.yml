@@ -34,7 +34,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart php-fpm
+  notify: Restart php-fpm
 
 - name: TEMPLATE | Configure APCu
   ansible.builtin.template:
@@ -43,4 +43,4 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart php-fpm
+  notify: Restart php-fpm
