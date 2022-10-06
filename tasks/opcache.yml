@@ -1,6 +1,8 @@
 ---
 
-- block:
+- name: Install opcache/apcu on Debian
+  when: ansible_os_family == 'Debian'
+  block:
 
     - name: APT | Install APCu
       ansible.builtin.apt:
@@ -12,9 +14,10 @@
         pkg: "{{ php_package_prefix }}opcache"
         install_recommends: false
 
-  when: ansible_os_family == 'Debian'
 
-- block:
+- name: Install opcache/apcu on FreeBSD
+  when: ansible_os_family == 'FreeBSD'
+  block:
 
     - name: PKGNG | Install APCu
       community.general.pkgng:
@@ -23,8 +26,6 @@
     - name: PKGNG | Install Opcache
       community.general.pkgng:
         name: "{{ php_package_prefix }}opcache"
-
-  when: ansible_os_family == 'FreeBSD'
 
 - name: TEMPLATE | Configure Opcache
   ansible.builtin.template:

@@ -1,6 +1,7 @@
 ---
 
 - hosts: all
+  name: Test all
   vars:
     vhost: 'test.local'
     php_extra_packages:
@@ -46,7 +47,7 @@
     - name: TEMPLATE | Nginx site config
       ansible.builtin.template:
         src: "templates/nginx.conf.j2"
-        dest: "{{ __nginx_conf  }}"
+        dest: "{{ __nginx_conf }}"
         mode: 0644
         owner: root
         group: root
@@ -71,7 +72,9 @@
         state: started
       when: ansible_virtualization_type != 'docker'
 
-    - block:
+    - name: Start nginx if testing with Docker
+      when: ansible_virtualization_type == 'docker'
+      block:
 
         - name: COMMAND | Docker nginx status
           ansible.builtin.command: service nginx status
@@ -87,17 +90,15 @@
             warn: false
           when: ngs.stdout.find('nginx is not running') != -1
 
-      when: ansible_virtualization_type == 'docker'
-
   handlers:
 
-    - name: reload nginx
+    - name: Reload nginx
       ansible.builtin.service:
         name: nginx
         state: reloaded
       notify: docker reload nginx
 
-    - name: docker reload nginx
+    - name: Docker reload nginx
       ansible.builtin.command: service nginx reload
       args:
         warn: false
@@ -168,7 +169,9 @@
         url: "http://localhost{{ php_fpm_poold.0.status_path }}"
       when: php_fpm_poold.0.status_path is defined
 
-    - block:
+    - name: Debian extra checks
+      when: ansible_os_family == 'Debian'
+      block:
 
         - name: SHELL | Check if we installed multiple PHP versions
           ansible.builtin.shell: set -o pipefail && (dpkg -l | grep 'php[[:digit:]].*common' | wc -l)
@@ -183,5 +186,3 @@
           ansible.builtin.fail:
             msg: "Multiple PHP versions detected"
           when: check_multiple_php.stdout != '1'
-
-      when: ansible_os_family == 'Debian'

@@ -60,6 +60,8 @@
     group: root
     mode: 0644
   register: f
+  tags:
+    - skip_ansible_lint
 
 - name: SETUP | Gathers new facts
   ansible.builtin.setup:
@@ -107,7 +109,9 @@
     state: started
   when: php_install_fpm and ansible_virtualization_type != 'docker'
 
-- block:
+- name: BLOCK | Ensure PHP-FPM is started if running on Docker
+  when: php_install_fpm and ansible_virtualization_type == 'docker'
+  block:
 
     - name: COMMAND | Check if PHP-FPM is started (Docker)
       ansible.builtin.command: 'service {{ php_fpm_service }} status'
@@ -122,5 +126,3 @@
       args:
         warn: false
       when: dps.stdout.find('is not running') != -1
-
-  when: php_install_fpm and ansible_virtualization_type == 'docker'
