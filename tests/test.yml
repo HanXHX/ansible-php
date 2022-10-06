@@ -51,20 +51,20 @@
         mode: 0644
         owner: root
         group: root
-      notify: reload nginx
+      notify: Reload nginx
 
     - name: COMMAND | Fix nginx config
       ansible.builtin.command: "cp {{ __nginx_conf | dirname }}/fastcgi_params {{ __nginx_conf | dirname }}/fastcgi.conf"
       args:
         creates: "{{ __nginx_conf | dirname }}/fastcgi.conf"
-      notify: reload nginx
+      notify: Reload nginx
 
     - name: LINEINFILE | Fix nginx config (second step)
       ansible.builtin.lineinfile:
         regexp: '^fastcgi_param\s+SCRIPT_FILENAME'
         line: "fastcgi_param  SCRIPT_FILENAME    $realpath_root$fastcgi_script_name;"
         dest: "{{ __nginx_conf | dirname }}/fastcgi.conf"
-      notify: reload nginx
+      notify: Reload nginx
 
     - name: SERVICE | Ensure nginx is started
       ansible.builtin.service:
