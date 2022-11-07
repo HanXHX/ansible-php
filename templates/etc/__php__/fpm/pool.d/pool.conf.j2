@@ -421,13 +421,19 @@ catch_workers_output = {{ item.catch_workers_output | default('no') }}
 ;php_admin_value[error_log] = /var/log/fpm-php.www.log
 ;php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
+{% if p.php_env is defined %}
 {% for k, v in item.php_env.items() | list %}
 env[{{ k }}] = {{ v }}
 {% endfor %}
+{% endif %}
+{% if p.php_value is defined %}
 {% for k, v in item.php_value.items() | list %}
 php_value[{{ k }}] = {{ v }}
 {% endfor %}
+{% endif %}
+{% if p.php_admin_value is defined %}
 {% for k, v in item.php_admin_value.items() | list %}
 php_admin_value[{{ k }}] = {{ v }}
 {% endfor %}
+{% endif %}
 ; vim:filetype=dosini
