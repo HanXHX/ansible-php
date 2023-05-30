@@ -39,7 +39,7 @@
           register: c
           failed_when: c.stdout == ''
 
-    - name: SHELL | Check custom php value
+    - name: SHELL | Check custom php value  # noqa: command-instead-of-module
       ansible.builtin.shell: "curl -H 'Host: {{ vhost }}' http://127.0.0.1/ini.php 2> /dev/null"
       changed_when: false
       register: c

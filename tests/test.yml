@@ -78,13 +78,13 @@
       when: ansible_virtualization_type == 'docker'
       block:
 
-        - name: COMMAND | Docker nginx status
+        - name: COMMAND | Docker nginx status  # noqa: command-instead-of-module
           ansible.builtin.command: service nginx status
           changed_when: false
           failed_when: false
           register: ngs
 
-        - name: COMMAND | Docker start nginx
+        - name: COMMAND | Docker start nginx  # noqa: command-instead-of-module no-changed-when
           ansible.builtin.command: service nginx start
           when: ngs.stdout.find('nginx is not running') != -1
 
@@ -96,7 +96,7 @@
         state: reloaded
       notify: Docker reload nginx
 
-    - name: Docker reload nginx
+    - name: Docker reload nginx  # noqa: command-instead-of-module no-changed-when
       ansible.builtin.command: service nginx reload
       notify: Docker reload nginx
       when: ansible_virtualization_type == 'docker'
@@ -146,7 +146,7 @@
       register: c
       failed_when: c.stdout == ''
 
-    - name: SHELL | Check custom php value
+    - name: SHELL | Check custom php value  # noqa: command-instead-of-module
       ansible.builtin.shell: "curl -H 'Host: {{ vhost }}' http://127.0.0.1/ini.php 2> /dev/null"
       changed_when: false
       register: c

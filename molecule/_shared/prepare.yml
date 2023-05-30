@@ -41,21 +41,6 @@
       ansible.builtin.service:
         name: nginx
         state: started
-      when: ansible_virtualization_type != 'docker'
-
-    - name: Start nginx if testing with Docker
-      when: ansible_virtualization_type == 'docker'
-      block:
-
-        - name: COMMAND | Docker nginx status
-          ansible.builtin.command: service nginx status
-          changed_when: false
-          failed_when: false
-          register: ngs
-
-        - name: COMMAND | Docker start nginx
-          ansible.builtin.command: service nginx start
-          when: ngs.stdout.find('nginx is not running') != -1
 
     - name: FILE | Create /var/www
       ansible.builtin.file:
