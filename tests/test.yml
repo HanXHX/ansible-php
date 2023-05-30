@@ -78,18 +78,14 @@
       when: ansible_virtualization_type == 'docker'
       block:
 
-        - name: COMMAND | Docker nginx status
+        - name: COMMAND | Docker nginx status  # noqa: command-instead-of-module
           ansible.builtin.command: service nginx status
-          args:
-            warn: false
           changed_when: false
           failed_when: false
           register: ngs
 
-        - name: COMMAND | Docker start nginx
+        - name: COMMAND | Docker start nginx  # noqa: command-instead-of-module no-changed-when
           ansible.builtin.command: service nginx start
-          args:
-            warn: false
           when: ngs.stdout.find('nginx is not running') != -1
 
   handlers:
@@ -100,10 +96,8 @@
         state: reloaded
       notify: Docker reload nginx
 
-    - name: Docker reload nginx
+    - name: Docker reload nginx  # noqa: command-instead-of-module no-changed-when
       ansible.builtin.command: service nginx reload
-      args:
-        warn: false
       notify: Docker reload nginx
       when: ansible_virtualization_type == 'docker'
 
@@ -147,16 +141,13 @@
     - name: SHELL | Check vhost
       ansible.builtin.shell: "set -o pipefail && curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version {{ php_version }}' | sed -r 's/<//g'"
       args:
-        warn: false
         executable: /bin/bash
       changed_when: false
       register: c
       failed_when: c.stdout == ''
 
-    - name: SHELL | Check custom php value
+    - name: SHELL | Check custom php value  # noqa: command-instead-of-module
       ansible.builtin.shell: "curl -H 'Host: {{ vhost }}' http://127.0.0.1/ini.php 2> /dev/null"
-      args:
-        warn: false
       changed_when: false
       register: c
       failed_when: 'php_fpm_poold.1.php_admin_value.memory_limit not in c.stdout'

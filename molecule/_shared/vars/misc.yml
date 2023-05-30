@@ -1,0 +1,36 @@
+---
+
+# Force SysVinit, since systemd won't work in a Docker container
+ansible_service_mgr: "sysvinit"
+
+# ----------------------------------------
+# Copied from {role_dir}/tests/test.yml
+# ----------------------------------------
+vhost: 'test.local'
+php_extra_packages:
+  - '{{ php_package_prefix }}pgsql'
+php_install_xdebug: true
+php_autoremove_default_pool: true
+php_ini_fpm:
+  display_errors: 'Off'
+php_ini_cli:
+  error_reporting: 'E_ALL'
+php_fpm_poold:
+  - pool_name: 'test_ansible'
+    listen: '/run/php/php-ansible1.sock'
+    pm: 'dynamic'
+    pm_max_children: 250
+    pm_start_servers: 10
+    pm_min_spare_servers: 10
+    pm_max_spare_servers: 20
+    status_path: '/status'
+    ping_path: '/ping'
+    ping_response: 'ok'
+  - name: 'test_ansible2'
+    user: 'foo'
+    php_env:
+      foo: bar
+    php_value:
+      display_errors: 'Off'
+    php_admin_value:
+      memory_limit: '98M'

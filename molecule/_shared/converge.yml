@@ -1,0 +1,25 @@
+---
+
+- name: Converge
+  hosts: all
+  gather_facts: true
+  handlers:
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+  tasks:
+    - name: Include role
+      ansible.builtin.include_role:
+        name: "hanxhx.php"
+  post_tasks:
+    - name: TEMPLATE | Nginx site config
+      ansible.builtin.template:
+        src: "../../tests/templates/nginx.conf.j2"
+        dest: "{{ __nginx_conf }}"
+        mode: 0644
+        owner: root
+        group: root
+      notify: Reload nginx
+  vars_files:
+    - vars/misc.yml

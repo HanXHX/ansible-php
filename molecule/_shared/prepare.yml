@@ -1,0 +1,67 @@
+---
+
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  vars_files:
+    - vars/misc.yml
+
+  handlers:
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+
+  tasks:
+
+    - name: INCLUDE_TASKS | Pre tasks related to OS
+      ansible.builtin.include_tasks: "../../tests/includes/pre_{{ ansible_os_family }}.yml"
+
+    - name: USER | Create PHP user
+      ansible.builtin.user:
+        name: 'foo'
+        system: true
+        create_home: false
+        shell: '/usr/sbin/nologin'
+
+    - name: COMMAND | Fix nginx config
+      ansible.builtin.command: "cp {{ __nginx_conf | dirname }}/fastcgi_params {{ __nginx_conf | dirname }}/fastcgi.conf"
+      args:
+        creates: "{{ __nginx_conf | dirname }}/fastcgi.conf"
+      notify: Reload nginx
+
+    - name: LINEINFILE | Fix nginx config (second step)
+      ansible.builtin.lineinfile:
+        regexp: '^fastcgi_param\s+SCRIPT_FILENAME'
+        line: "fastcgi_param  SCRIPT_FILENAME    $realpath_root$fastcgi_script_name;"
+        dest: "{{ __nginx_conf | dirname }}/fastcgi.conf"
+      notify: Reload nginx
+
+    - name: SERVICE | Ensure nginx is started
+      ansible.builtin.service:
+        name: nginx
+        state: started
+
+    - name: FILE | Create /var/www
+      ansible.builtin.file:
+        dest: /var/www
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: COPY | Add phpinfo
+      ansible.builtin.copy:
+        dest: /var/www/phpinfo.php
+        content: '<?php phpinfo();'
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: COPY | Add ini test file
+      ansible.builtin.copy:
+        dest: /var/www/ini.php
+        content: '<?php echo ini_get("memory_limit") . "\n";'
+        owner: root
+        group: root
+        mode: 0644
