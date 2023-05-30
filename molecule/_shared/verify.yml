@@ -1,0 +1,74 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: true
+  vars_files:
+    - vars/misc.yml
+  tasks:
+
+    - name: COMMAND | Test php-cli
+      ansible.builtin.command: php -v
+      changed_when: false
+
+    - name: SHELL | Check vhost
+      ansible.builtin.shell: "set -o pipefail && curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep 'PHP Version'"
+      args:
+        executable: /bin/bash
+      changed_when: false
+      register: c
+      failed_when: c.stdout == ''
+
+    - name: BLOCK | Test explicit version
+      when: php_version is defined
+      block:
+
+        - name: SHELL | Test php-cli (explicit version)
+          ansible.builtin.shell: set -o pipefail && php -i | grep '^PHP Version => {{ php_version }}' | head -n 1
+          changed_when: false
+          register: p
+          failed_when: p.stdout == ''
+          args:
+            executable: /bin/bash
+
+        - name: SHELL | Check vhost
+          ansible.builtin.shell: "set -o pipefail && curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version {{ php_version }}' | sed -r 's/<//g'"
+          args:
+            executable: /bin/bash
+          changed_when: false
+          register: c
+          failed_when: c.stdout == ''
+
+    - name: SHELL | Check custom php value
+      ansible.builtin.shell: "curl -H 'Host: {{ vhost }}' http://127.0.0.1/ini.php 2> /dev/null"
+      changed_when: false
+      register: c
+      failed_when: 'php_fpm_poold.1.php_admin_value.memory_limit not in c.stdout'
+
+    - name: URI | Check ping
+      ansible.builtin.uri:
+        url: "http://localhost{{ php_fpm_poold.0.ping_path }}"
+      when: php_fpm_poold.0.ping_path is defined
+
+    - name: URI | Check status
+      ansible.builtin.uri:
+        url: "http://localhost{{ php_fpm_poold.0.status_path }}"
+      when: php_fpm_poold.0.status_path is defined
+
+    - name: Debian extra checks
+      when: ansible_os_family == 'Debian'
+      block:
+
+        - name: SHELL | Check if we installed multiple PHP versions
+          ansible.builtin.shell: set -o pipefail && (dpkg -l | grep 'php[[:digit:]].*common' | wc -l)
+          args:
+            executable: /bin/bash
+          failed_when: false
+          changed_when: false
+          register: check_multiple_php
+
+
+        - name: FAIL | If we have multiple PHP version
+          ansible.builtin.fail:
+            msg: "Multiple PHP versions detected"
+          when: check_multiple_php.stdout != '1'

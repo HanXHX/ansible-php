@@ -19,6 +19,6 @@
       - nginx
       - vim
 
-- name: INCLUDE_TASKS | Sury
+- name: INCLUDE_TASKS | Sury (only if a specific php_version is defined)
   ansible.builtin.include_tasks: Debian/sury.yml
-  when: php_version != php_default_version
+  when: php_version is defined
