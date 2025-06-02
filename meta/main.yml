@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Emilien Mantel
-  namespace: hanxhx
+  namespace: HanXHX
   role_name: php
   description: Install and configure PHP 7.x/8.x
   company: TripleStack
