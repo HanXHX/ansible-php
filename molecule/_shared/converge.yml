@@ -17,7 +17,7 @@
       ansible.builtin.template:
         src: "templates/nginx.conf.j2"
         dest: "{{ __nginx_conf }}"
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
       notify: Reload nginx

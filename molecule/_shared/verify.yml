@@ -20,7 +20,7 @@
         state: directory
         owner: root
         group: root
-        mode: 0755
+        mode: "0755"
 
     - name: COPY | Add phpinfo
       ansible.builtin.copy:
@@ -28,7 +28,7 @@
         content: '<?php phpinfo();'
         owner: root
         group: root
-        mode: 0644
+        mode: "0644"
 
     - name: COPY | Add ini test file
       ansible.builtin.copy:
@@ -36,7 +36,7 @@
         content: '<?php echo ini_get("memory_limit") . "\n";'
         owner: root
         group: root
-        mode: 0644
+        mode: "0644"
 
     - name: SHELL | Check vhost
       ansible.builtin.shell: "set -o pipefail && curl -v -H 'Host: {{ vhost }}' http://127.0.0.1/phpinfo.php 2> /dev/null | grep h1 | grep -o 'PHP Version {{ ansible_local.hanxhx_php.php_version }}' | sed -r 's/<//g'"

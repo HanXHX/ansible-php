@@ -56,7 +56,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: COPY | Manage facts
   ansible.builtin.copy:
@@ -64,7 +64,7 @@
     dest: /etc/ansible/facts.d/hanxhx_php.fact
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   register: f
   tags:
     - skip_ansible_lint

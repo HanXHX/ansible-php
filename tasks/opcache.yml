@@ -16,7 +16,7 @@
     dest: "{{ php_mods_dir }}/opcache.ini"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   notify: Restart php-fpm
 
 - name: TEMPLATE | Configure APCu
@@ -25,5 +25,5 @@
     dest: "{{ php_mods_dir }}/apcu.ini"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   notify: Restart php-fpm

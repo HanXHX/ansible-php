@@ -17,7 +17,7 @@
         src: "etc/__php__/mods-available/xdebug.ini.j2"
         dest: "{{ php_mods_dir }}/xdebug.ini"
         owner: root
-        mode: 0644
+        mode: "0644"
       notify: Restart php-fpm
 
 - name: APT | Uninstall xdebug

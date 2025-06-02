@@ -14,7 +14,7 @@
     create: true
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   loop: "{{ php_ini | combine(php_ini_fpm) | dict2items }}"
   notify: Restart php-fpm
 
@@ -24,7 +24,7 @@
     dest: '{{ php_fpm_pool_dir }}/{{ item.name }}.conf'
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   loop: "{{ ansible_local.hanxhx_php.fpm_pool }}"
   notify: Restart php-fpm
 
