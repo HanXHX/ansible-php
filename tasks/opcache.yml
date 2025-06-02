@@ -1,30 +1,14 @@
 ---
 
-- block:
+- name: APT | Install APCu
+  ansible.builtin.apt:
+    pkg: "{{ php_apcu_package }}"
+    install_recommends: false
 
-    - name: APT | Install APCu
-      ansible.builtin.apt:
-        pkg: "{{ php_apcu_package }}"
-        install_recommends: false
-
-    - name: APT | Install Opcache
-      ansible.builtin.apt:
-        pkg: "{{ php_package_prefix }}opcache"
-        install_recommends: false
-
-  when: ansible_os_family == 'Debian'
-
-- block:
-
-    - name: PKGNG | Install APCu
-      community.general.pkgng:
-        name: "php{{ php_version | replace('.', '') }}-pecl-APCu"
-
-    - name: PKGNG | Install Opcache
-      community.general.pkgng:
-        name: "{{ php_package_prefix }}opcache"
-
-  when: ansible_os_family == 'FreeBSD'
+- name: APT | Install Opcache
+  ansible.builtin.apt:
+    pkg: "{{ php_package_prefix }}opcache"
+    install_recommends: false
 
 - name: TEMPLATE | Configure Opcache
   ansible.builtin.template:
@@ -33,7 +17,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart php-fpm
+  notify: Restart php-fpm
 
 - name: TEMPLATE | Configure APCu
   ansible.builtin.template:
@@ -42,4 +26,4 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart php-fpm
+  notify: Restart php-fpm

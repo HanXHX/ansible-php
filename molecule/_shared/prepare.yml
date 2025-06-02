@@ -1,0 +1,41 @@
+---
+
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: APT | Install packages
+      ansible.builtin.apt:
+        pkg: "{{ p }}"
+        update_cache: true
+        cache_valid_time: 3600
+      vars:
+        p:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gpg
+          - lsb-release
+          - nginx
+          - vim
+
+    - name: BLOCK | Setup Sury on Debian
+      when:
+        - php_version is not none
+        - php_version != php_default_version
+        - ansible_distribution == 'Debian'
+      block:
+        - name: APT | Install Sury key
+          ansible.builtin.apt_key:
+            url: 'https://packages.sury.org/php/apt.gpg'
+
+        - name: APT_REPOSITORY | Add Sury repository
+          ansible.builtin.apt_repository:
+            repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'
+
+    - name: USER | Create PHP user
+      ansible.builtin.user:
+        name: 'foo'
+        system: true
+        create_home: false
+        shell: '/usr/sbin/nologin'

@@ -1,0 +1,41 @@
+---
+
+- name: Converge  # noqa: role-name[path]
+  hosts: all
+  gather_facts: true
+  roles:
+    - ../../../
+  handlers:
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+  vars:
+    __nginx_conf: /etc/nginx/nginx.conf
+  post_tasks:
+    - name: TEMPLATE | Nginx site config
+      ansible.builtin.template:
+        src: "templates/nginx.conf.j2"
+        dest: "{{ __nginx_conf }}"
+        mode: 0644
+        owner: root
+        group: root
+      notify: Reload nginx
+
+    - name: COMMAND | Fix nginx config
+      ansible.builtin.command: "cp {{ __nginx_conf | dirname }}/fastcgi_params {{ __nginx_conf | dirname }}/fastcgi.conf"
+      args:
+        creates: "{{ __nginx_conf | dirname }}/fastcgi.conf"
+      notify: Reload nginx
+
+    - name: LINEINFILE | Fix nginx config (second step)
+      ansible.builtin.lineinfile:
+        regexp: '^fastcgi_param\s+SCRIPT_FILENAME'
+        line: "fastcgi_param  SCRIPT_FILENAME    $realpath_root$fastcgi_script_name;"
+        dest: "{{ __nginx_conf | dirname }}/fastcgi.conf"
+      notify: Reload nginx
+
+    - name: SERVICE | Ensure Nginx is started
+      ansible.builtin.service:
+        name: nginx
+        state: started

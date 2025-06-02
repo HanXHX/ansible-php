@@ -1,8 +1,12 @@
 events {
-    worker_connections  1024;
+    worker_connections 512;
+    multi_accept on;
+    use epoll;
 }
 
-user {{ php_default_user_group }};
+user www-data;
+worker_processes 1;
+pid /run/nginx.pid;
 
 http {
     include       mime.types;
