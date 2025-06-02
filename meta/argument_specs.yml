@@ -1,0 +1,6 @@
+---
+
+argument_specs:
+  main:
+    short_description: Main entry point
+    options: {}

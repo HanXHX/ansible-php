@@ -1,7 +1,7 @@
 Ansible PHP (+FPM) role for Debian / Ubuntu
 ===========================================
 
-[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-HanXHX.php-blue.svg)](https://galaxy.ansible.com/HanXHX/php) [![Build Status](https://app.travis-ci.com/HanXHX/ansible-php.svg?branch=master)](https://app.travis-ci.com/HanXHX/ansible-php)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-hanxhx.php-blue.svg)](https://galaxy.ansible.com/hanxhx.php) ![GitHub Workflow Status (master)](https://img.shields.io/github/actions/workflow/status/hanxhx/ansible-php/molecule.yml?branch=master)
 
 Install PHP on Debian / Ubuntu. Manage PHP-FPM, APCu, Opcache and Xdebug.
 
