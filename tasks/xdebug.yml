@@ -1,9 +1,8 @@
 ---
 
-- name: BLOCK | Uninstall xdebug
+- name: BLOCK | Install Xdebug
   when: php_install_xdebug
   block:
-
     - name: APT | Install xdebug
       ansible.builtin.apt:
         pkg: "{{ php_xdebug_package }}"
@@ -13,11 +12,6 @@
         install_recommends: false
       when: ansible_os_family == 'Debian'
 
-    - name: PKGNG | Install xdebug
-      community.general.pkgng:
-        name: "{{ php_xdebug_package }}"
-      when: ansible_os_family == 'FreeBSD' and php_xdebug_package is defined
-
     - name: TEMPLATE | Deploy module configurations
       ansible.builtin.template:
         src: "etc/__php__/mods-available/xdebug.ini.j2"
@@ -26,19 +20,8 @@
         mode: 0644
       notify: Restart php-fpm
 
-
-- name: BLOCK | Uninstall xdebug
+- name: APT | Uninstall xdebug
+  ansible.builtin.apt:
+    pkg: "{{ php_xdebug_package }}"
+    state: absent
   when: not php_install_xdebug
-  block:
-
-    - name: APT | Uninstall xdebug
-      ansible.builtin.apt:
-        pkg: "{{ php_xdebug_package }}"
-        state: absent
-      when: ansible_os_family == 'Debian'
-
-    - name: PKGNG | Uninstall xdebug
-      community.general.pkgng:
-        name: "{{ php_xdebug_package }}"
-        state: absent
-      when: ansible_os_family == 'FreeBSD'

@@ -1,7 +1,9 @@
-.vagrant*
 *.swp
 *.retry
 *.log
 /filter_plugins/*.pyc
 /filter_plugins/__pycache__
 /.idea
+/.venv
+/venv
+/.ansible

@@ -6,12 +6,6 @@
     state: "{{ 'present' if php_install_fpm else 'absent' }}"
   when: ansible_os_family == 'Debian'
 
-- name: SERVICE | Enable service on FreeBSD
-  ansible.builtin.service:
-    name: "{{ php_fpm_service }}"
-    enabled: "{{ 'true' if php_install_fpm else 'false' }}"
-  when: ansible_os_family == 'FreeBSD'
-
 - name: LINEINFILE | PHP configuration
   ansible.builtin.lineinfile:
     dest: '{{ php_fpm_ini }}'
@@ -22,7 +16,6 @@
     group: root
     mode: 0644
   loop: "{{ php_ini | combine(php_ini_fpm) | dict2items }}"
-  when: php_install_fpm | bool
   notify: Restart php-fpm
 
 - name: TEMPLATE | Deploy pool configuration
@@ -33,14 +26,11 @@
     group: root
     mode: 0644
   loop: "{{ ansible_local.hanxhx_php.fpm_pool }}"
-  when: php_install_fpm | bool
   notify: Restart php-fpm
 
 - name: FILE | Delete default pool if necessary
   ansible.builtin.file:
     path: "{{ php_fpm_pool_dir }}/www.conf"
     state: absent
-  when:
-    - '"www" not in (ansible_local.hanxhx_php.fpm_pool | map(attribute="name") | list) and php_autoremove_default_pool'
-    - php_install_fpm | bool
+  when: '"www" not in (ansible_local.hanxhx_php.fpm_pool | map(attribute="name") | list) and php_autoremove_default_pool'
   notify: Restart php-fpm

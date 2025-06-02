@@ -19,6 +19,11 @@
     - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
 
+- name: SET_FACT | Prepare PHP version if not defined
+  ansible.builtin.set_fact:
+    php_version: "{{ php_default_version }}"
+  when: php_version is none or php_version == '' or php_version is not defined
+
 - name: SET_FACT | Transform data
   ansible.builtin.set_fact:
     __php_fpm_full_pool: |
@@ -55,7 +60,7 @@
 
 - name: COPY | Manage facts
   ansible.builtin.copy:
-    content: "{ \"fpm_pool\": {{ php_fpm_full_pool | to_nice_json }} }"
+    content: "{ \"fpm_pool\": {{ php_fpm_full_pool | to_nice_json }}, \"php_version\": \"{{ php_version }}\" }"
     dest: /etc/ansible/facts.d/hanxhx_php.fact
     owner: root
     group: root
@@ -80,13 +85,6 @@
   vars:
     pkgs: "{{ php_packages + php_extra_packages | flatten }}"
   notify: Restart php-fpm
-  when: ansible_os_family == 'Debian'
-
-- name: PKGNG | Install PHP packages
-  community.general.pkgng:
-    name: "{{ php_packages + php_extra_packages | flatten | join(',') }}"
-  notify: Restart php-fpm
-  when: ansible_os_family == 'FreeBSD'
 
 - name: IMPORT_TASKS | PHP-FPM
   ansible.builtin.import_tasks: fpm.yml
@@ -104,22 +102,9 @@
 - name: APT | Install and configure opcache
   ansible.builtin.import_tasks: opcache.yml
 
-- name: SERVICE | Ensure PHP-FPM is started
+- name: SERVICE | Ensure PHP-FPM is started and enabled
+  when: php_install_fpm
   ansible.builtin.service:
     name: '{{ php_fpm_service }}'
     state: started
-  when: php_install_fpm and ansible_virtualization_type != 'docker'
-
-- name: BLOCK | Ensure PHP-FPM is started if running on Docker
-  when: php_install_fpm and ansible_virtualization_type == 'docker'
-  block:
-
-    - name: COMMAND | Check if PHP-FPM is started (Docker)  # noqa: command-instead-of-module
-      ansible.builtin.command: 'service {{ php_fpm_service }} status'
-      register: dps
-      changed_when: false
-      failed_when: false
-
-    - name: COMMAND | Ensure PHP-FPM is started (Docker)  # noqa: command-instead-of-module no-changed-when
-      ansible.builtin.command: 'service {{ php_fpm_service }} start'
-      when: dps.stdout.find('is not running') != -1
+    enabled: true

@@ -1,26 +1,23 @@
 ---
 galaxy_info:
   author: Emilien Mantel
-  role_name: php
   namespace: hanxhx
+  role_name: php
   description: Install and configure PHP 7.x/8.x
   company: TripleStack
   license: GPLv2
-  min_ansible_version: '2.11'
+  min_ansible_version: "2.18"
   platforms:
     - name: Debian
       versions:
-        - buster
         - bullseye
         - bookworm
+        - trixie
     - name: Ubuntu
       versions:
-        - bionic
-    - name: FreeBSD
-      versions:
-        - '11.0'
-        - '11.1'
-        - '12.0'
+        - focal
+        - jammy
+        - noble
   galaxy_tags:
     - development
     - web
@@ -30,6 +27,4 @@ galaxy_info:
     - php8
     - debian
     - ubuntu
-    - freebsd
-
 dependencies: []

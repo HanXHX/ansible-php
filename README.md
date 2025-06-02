@@ -1,22 +1,14 @@
-Ansible PHP (+FPM) role for Debian / Ubuntu / FreeBSD
-=====================================================
+Ansible PHP (+FPM) role for Debian / Ubuntu
+===========================================
 
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-hanxhx.php-blue.svg)](https://galaxy.ansible.com/hanxhx.php) ![GitHub Workflow Status (master)](https://img.shields.io/github/actions/workflow/status/hanxhx/ansible-php/molecule.yml?branch=master)
 
-Install PHP on Debian / Ubuntu / FreeBSD. Manage PHP-FPM, APCu, Opcache and Xdebug.
+Install PHP on Debian / Ubuntu. Manage PHP-FPM, APCu, Opcache and Xdebug.
 
 Managed OS / Versions
 ---------------------
 
-On all Debian versions, you can install all PHP versions by using [Sury's APT repository](https://deb.sury.org/).
-
-Other cases:
-
-|         OS            |       PHP 7.0       |        PHP 7.1       |      PHP 7.2         |       PHP 7.3        |     PHP >= 7.4      |
-|:---------------------:|:-------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:
-| Ubuntu Bionic (18.04) | :x:                 | :x:                  | :heavy_check_mark:   | :x:                  | :x:                 |
-| FreeBSD 11            | :heavy_check_mark:  | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   | Need tests...       |
-| FreeBSD 12            | :heavy_check_mark:  | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   | Need tests...       |
+On all Debian versions, you can install all PHP versions (from PHP 5.6 to latest version) by using [Sury's APT repository](https://deb.sury.org/).
 
 Links:
 - [Sury](https://deb.sury.org/)
@@ -28,13 +20,6 @@ Requirements
 - Collections: [community.general](https://galaxy.ansible.com/community/general)
 - If you need PHP-FPM, you must install a webserver with FastCGI support. You can use my [nginx role](https://github.com/HanXHX/ansible-nginx).
 
-FreeBSD limitations
--------------------
-
-- It doesn't split ini file for FPM/CLI. It's hardcoded as `/usr/local/etc/php.ini`.
-- It can't manage multiple PHP versions at the time (like legacy Debian versions)
-- You must explicitely set xdebug package name (use `pkg search xdebug` to find the good one)
-
 Role Variables
 --------------
 
@@ -42,7 +27,7 @@ You should look at [default vars](defaults/main.yml).
 
 ### Writable vars
 
-- `php_version`: 7.3, 7.4... depending OS (see above)
+- `php_version`: 7.3, 7.4... depending on OS
 - `php_install_fpm`: boolean, install and manage php-fpm (default is true)
 - `php_install_xdebug`: boolean, install [Xdebug](http://xdebug.org)
 - `php_extra_packages`: additional php packages to install (default is an empty list).
@@ -159,16 +144,20 @@ Example Playbook
 
 ### Simple Playbook
 
-    - hosts: servers
-      roles:
-         - { role: hanxhx.php }
+```yaml
+- hosts: servers
+  roles:
+     - { role: HanXHX.php }
+```
 
 ### Debian Bullseye with PHP 8.0 CLI (no FPM)
 
-    - hosts: servers
-      roles:
-         - { role: HanXHX.sury }
-         - { role: hanxhx.php, php_version: '8.0', php_install_fpm: false }
+```yaml
+- hosts: servers
+  roles:
+     - { role: HanXHX.sury }
+     - { role: HanXHX.php, php_version: '8.0', php_install_fpm: false }
+```
 
 License
 -------
@@ -185,7 +174,7 @@ If this code helped you, or if you’ve used them for your projects, feel free t
 - Litecoin: `LeNDw34zQLX84VvhCGADNvHMEgb5QyFXyD`
 - Monero: `45wbf7VdQAZS5EWUrPhen7Wo4hy7Pa7c7ZBdaWQSRowtd3CZ5vpVw5nTPphTuqVQrnYZC72FXDYyfP31uJmfSQ6qRXFy3bQ`
 
-No crypto-currency? :star: the project is also a way of saying thank you! :sunglasses:
+No cryptocurrency? :star: the project is also a way of saying thank you! :sunglasses:
 
 Author Information
 ------------------

@@ -1,9 +1,0 @@
----
-
-- name: APT | Install Sury key
-  ansible.builtin.apt_key:
-    url: 'https://packages.sury.org/php/apt.gpg'
-
-- name: APT_REPOSITORY | Add Sury repository
-  ansible.builtin.apt_repository:
-    repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'

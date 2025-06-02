@@ -1,8 +1,8 @@
 ---
 
 platforms:
-  - name: ubuntu-18.04
-    image: dokken/ubuntu-18.04
+  - name: debian-12
+    image: dokken/debian-13
     command: /lib/systemd/systemd
     dockerfile: ../_shared/Dockerfile.j2
     capabilities:
@@ -11,9 +11,3 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
     privileged: true
-
-provisioner:
-  inventory:
-    group_vars:
-      all:
-        __nginx_conf: /etc/nginx/nginx.conf

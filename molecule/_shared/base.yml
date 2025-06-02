@@ -13,12 +13,15 @@ scenario:
 dependency:
   name: galaxy
   options:
-    requirements-file: ../../requirements.yml
+    requirements-file: ./molecule/_shared/requirements.yml
+    role-file: ./molecule/_shared/requirements.yml
 driver:
   name: docker
 role_name_check: 1
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_FILTER_PLUGINS: "../../filter_plugins"
   config_options:
     defaults:
       deprecation_warnings: false
@@ -32,5 +35,8 @@ provisioner:
     converge: ../_shared/converge.yml
     prepare: ../_shared/prepare.yml
     verify: ../_shared/verify.yml
+  inventory:
+    links:
+      group_vars: ../_shared/group_vars
 verifier:
   name: ansible

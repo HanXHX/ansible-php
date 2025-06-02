@@ -3,19 +3,35 @@
 - name: Prepare
   hosts: all
   gather_facts: true
-  vars_files:
-    - vars/misc.yml
-
-  handlers:
-    - name: Reload nginx
-      ansible.builtin.service:
-        name: nginx
-        state: reloaded
-
   tasks:
+    - name: APT | Install packages
+      ansible.builtin.apt:
+        pkg: "{{ p }}"
+        update_cache: true
+        cache_valid_time: 3600
+      vars:
+        p:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gpg
+          - lsb-release
+          - nginx
+          - vim
 
-    - name: INCLUDE_TASKS | Pre tasks related to OS
-      ansible.builtin.include_tasks: "../../tests/includes/pre_{{ ansible_os_family }}.yml"
+    - name: BLOCK | Setup Sury on Debian
+      when:
+        - php_version is not none
+        - php_version != php_default_version
+        - ansible_distribution == 'Debian'
+      block:
+        - name: APT | Install Sury key
+          ansible.builtin.apt_key:
+            url: 'https://packages.sury.org/php/apt.gpg'
+
+        - name: APT_REPOSITORY | Add Sury repository
+          ansible.builtin.apt_repository:
+            repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'
 
     - name: USER | Create PHP user
       ansible.builtin.user:
@@ -23,45 +39,3 @@
         system: true
         create_home: false
         shell: '/usr/sbin/nologin'
-
-    - name: COMMAND | Fix nginx config
-      ansible.builtin.command: "cp {{ __nginx_conf | dirname }}/fastcgi_params {{ __nginx_conf | dirname }}/fastcgi.conf"
-      args:
-        creates: "{{ __nginx_conf | dirname }}/fastcgi.conf"
-      notify: Reload nginx
-
-    - name: LINEINFILE | Fix nginx config (second step)
-      ansible.builtin.lineinfile:
-        regexp: '^fastcgi_param\s+SCRIPT_FILENAME'
-        line: "fastcgi_param  SCRIPT_FILENAME    $realpath_root$fastcgi_script_name;"
-        dest: "{{ __nginx_conf | dirname }}/fastcgi.conf"
-      notify: Reload nginx
-
-    - name: SERVICE | Ensure nginx is started
-      ansible.builtin.service:
-        name: nginx
-        state: started
-
-    - name: FILE | Create /var/www
-      ansible.builtin.file:
-        dest: /var/www
-        state: directory
-        owner: root
-        group: root
-        mode: 0755
-
-    - name: COPY | Add phpinfo
-      ansible.builtin.copy:
-        dest: /var/www/phpinfo.php
-        content: '<?php phpinfo();'
-        owner: root
-        group: root
-        mode: 0644
-
-    - name: COPY | Add ini test file
-      ansible.builtin.copy:
-        dest: /var/www/ini.php
-        content: '<?php echo ini_get("memory_limit") . "\n";'
-        owner: root
-        group: root
-        mode: 0644
